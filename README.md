@@ -20,8 +20,11 @@ This tool was specifically developed to split FAIMS .raw files into MzXMLs. If y
 <h1 align="center">
   <a><img src="https://github.com/coongroup/FAIMS-MzXML-Generator/blob/master/Images/XRawFileNotRegistered.png" width="500"></a>
 </h1>
-This particular error is thrown when the 32-bit version of XRawFile2.dll from either MsFileReader or Thermo Foundation is not installed, or the dependency is not correctly registered with Windows. <br>
+
+This particular error is thrown when the 32-bit version of XRawFile2.dll from either MsFileReader or Thermo Foundation is not installed, or the dependency is not correctly registered with Windows.
+
 This error can be resolved by installing the 32-bit version of MsFileReader or Xcalibur if it is not already installed or manually registering the required dependencies using Windows Command Prompt/Microsoft Register Server the using the following directions if XRawFile.dll already exists on your system.
+
 
 1. Find the paths to the following locations/files on your computer
 ```
@@ -41,6 +44,6 @@ cd C:\Windows\SysWOW64
 Example. The path to the XRawFile2 dll may change depending on your computer's configuration
 regsvr32.exe C:\Program Files (x86)\Thermo\MSFileReader\XRawfile2.dll
 ```
-The 32 bit dependencies should now all be correct registered and the COMException error should no longer occur.
+The 32-bit version of XRawFile2.dll should now be correct registered and the COMException error should no longer occur.
 
-If you encounter any other issues with this software tool please contact us at brademan@wisc.edu.<br><br>
+If you encounter any other issues with this software tool please contact me at brademan@wisc.edu.
