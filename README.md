@@ -4,7 +4,9 @@
 
 MaxQuant currently does not process FAIMS data correctly if multiple correction voltages are used through the experiment's duration. The FAIMS MzXML Generator was developed as a workaround to this issue by splitting a FAIMS Raw file into a set of MaxQuant compliant MzXML files, each containing only scans collected using a single correction voltage. These resulting MzXML files can then be processed via MaxQuant as usual.
 
-Written in C#, the FAIMS MzXML Generator accepts Thermo .raw files collected from FAIMS experiments. To begin using the application, download the repository and extract it from the resulting zipped folder. The executable *FAIMS MzXML Generator.exe* is used to launch the application. 
+Written in C#, the FAIMS MzXML Generator accepts Thermo .raw files collected from FAIMS experiments. To begin using the application, download the repository and extract it from the resulting zipped folder. 
+
+The executable *FAIMS MzXML Generator.exe* is used to launch the application. 
 
 ### Prerequisites
 
