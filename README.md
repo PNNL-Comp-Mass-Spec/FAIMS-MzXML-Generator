@@ -15,9 +15,6 @@ The executable *FAIMS MzXML Generator.exe* is used to launch the application.
 
 ### Known Issues
 
-#### The program didn't return any MzXMLs from my non-FAIMS .raw file
-This tool was specifically developed to split FAIMS .raw files into MzXMLs. If your file doesn't contain correction voltages, the FAIMS MzXML generator will not create any MzXMLs by design. Other converters such as ReAdW or MsConvert can already have this functionality.
-
 #### Unhandled Exception: System.Runtime.InteropServices.COMException
 <h1 align="center">
   <a><img src="https://github.com/coongroup/FAIMS-MzXML-Generator/blob/master/Images/XRawFileNotRegistered.png" width="500"></a>
@@ -53,5 +50,8 @@ regsvr32.exe C:\Program Files (x86)\Thermo\MSFileReader\XRawfile2.dll
 ```
 
 The 32-bit version of XRawFile2.dll should now be correct registered and the COMException error should no longer occur.
+
+#### The program didn't return any MzXMLs from my non-FAIMS .raw file
+This tool was specifically developed to split FAIMS .raw files into MzXMLs. If your file doesn't contain correction voltages, the FAIMS MzXML generator will not create any MzXMLs by design. Other converters such as ReAdW or MsConvert can already have this functionality.
 
 If you encounter any other issues with this software tool please contact me at brademan@wisc.edu.
