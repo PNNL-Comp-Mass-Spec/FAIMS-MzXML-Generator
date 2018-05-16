@@ -46,7 +46,7 @@ cd C:\Windows\SysWOW64
 \\ Example
 \\ The exact file path to XRawFile2.dlll may change depending on your computer's configuration
 
-regsvr32.exe C:\Program Files (x86)\Thermo\MSFileReader\XRawfile2.dll
+regsvr32.exe "C:\Program Files (x86)\Thermo\MSFileReader\XRawfile2.dll"
 ```
 
 The 32-bit version of XRawFile2.dll should now be correct registered and the COMException error should no longer occur.
