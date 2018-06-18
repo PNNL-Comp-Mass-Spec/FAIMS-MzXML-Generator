@@ -1,0 +1,20 @@
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\WriteFaimsXMLFromRawFile\WriteFaimsXMLFromRawFile\bin\Debug\WriteFaimsXMLFromRawFile.exe.config
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\WriteFaimsXMLFromRawFile\WriteFaimsXMLFromRawFile\obj\Debug\WriteFaimsXMLFromRawFile.csprojResolveAssemblyReference.cache
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\WriteFaimsXMLFromRawFile\WriteFaimsXMLFromRawFile\bin\Debug\WriteFaimsXMLFromRawFile.exe
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\WriteFaimsXMLFromRawFile\WriteFaimsXMLFromRawFile\bin\Debug\WriteFaimsXMLFromRawFile.pdb
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\WriteFaimsXMLFromRawFile\WriteFaimsXMLFromRawFile\bin\Debug\CSMSL.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\WriteFaimsXMLFromRawFile\WriteFaimsXMLFromRawFile\bin\Debug\CSMSL.Thermo.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\WriteFaimsXMLFromRawFile\WriteFaimsXMLFromRawFile\bin\Debug\CSMSL.pdb
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\WriteFaimsXMLFromRawFile\WriteFaimsXMLFromRawFile\bin\Debug\CSMSL.Thermo.pdb
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\WriteFaimsXMLFromRawFile\WriteFaimsXMLFromRawFile\obj\Debug\WriteFaimsXMLFromRawFile.exe
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\WriteFaimsXMLFromRawFile\WriteFaimsXMLFromRawFile\obj\Debug\WriteFaimsXMLFromRawFile.pdb
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\WriteFaimsXMLFromRawFile\WriteFaimsXMLFromRawFile\bin\Debug\Microsoft.CSharp.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\WriteFaimsXMLFromRawFile\WriteFaimsXMLFromRawFile\bin\Debug\System.Data.DataSetExtensions.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\WriteFaimsXMLFromRawFile\WriteFaimsXMLFromRawFile\bin\Debug\System.Data.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\WriteFaimsXMLFromRawFile\WriteFaimsXMLFromRawFile\bin\Debug\System.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\WriteFaimsXMLFromRawFile\WriteFaimsXMLFromRawFile\bin\Debug\System.Net.Http.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\WriteFaimsXMLFromRawFile\WriteFaimsXMLFromRawFile\bin\Debug\System.Xml.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\WriteFaimsXMLFromRawFile\WriteFaimsXMLFromRawFile\bin\Debug\System.Xml.Linq.dll
+C:\Users\dbrademan\Desktop\Source Code\WriteFaimsXMLFromRawFile\WriteFaimsXMLFromRawFile\bin\Debug\WriteFaimsXMLFromRawFile.exe.config
+C:\Users\dbrademan\Desktop\Source Code\WriteFaimsXMLFromRawFile\WriteFaimsXMLFromRawFile\obj\Debug\WriteFaimsXMLFromRawFile.exe
+C:\Users\dbrademan\Desktop\Source Code\WriteFaimsXMLFromRawFile\WriteFaimsXMLFromRawFile\obj\Debug\WriteFaimsXMLFromRawFile.pdb
