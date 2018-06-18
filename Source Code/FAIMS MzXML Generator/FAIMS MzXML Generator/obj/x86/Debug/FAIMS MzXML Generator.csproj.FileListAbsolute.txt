@@ -1,0 +1,30 @@
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\FAIMS MzXML Generator.exe.config
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\Rawfile To MzXML\CSMSL.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\Rawfile To MzXML\CSMSL.Thermo.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\Rawfile To MzXML\Microsoft.CSharp.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\Rawfile To MzXML\System.Data.DataSetExtensions.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\Rawfile To MzXML\System.Data.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\Rawfile To MzXML\System.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\Rawfile To MzXML\System.Net.Http.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\Rawfile To MzXML\System.Xml.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\Rawfile To MzXML\WriteFaimsXMLFromRawFile.exe
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\Rawfile To MzXML\WriteFaimsXMLFromRawFile.vshost.exe
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\App.config
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\FAIMS MzXML Generator.exe
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\FAIMS MzXML Generator.pdb
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\Microsoft.CSharp.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\System.Data.DataSetExtensions.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\System.Data.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\System.Deployment.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\System.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\System.Drawing.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\System.Net.Http.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\System.Windows.Forms.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\System.Xml.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\bin\x86\Debug\System.Xml.Linq.dll
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\obj\x86\Debug\FAIMS MzXML Generator.csprojResolveAssemblyReference.cache
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\obj\x86\Debug\FAIMS_MzXML_Generator.Form1.resources
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\obj\x86\Debug\FAIMS_MzXML_Generator.Properties.Resources.resources
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\obj\x86\Debug\FAIMS MzXML Generator.csproj.GenerateResource.Cache
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\obj\x86\Debug\FAIMS MzXML Generator.exe
+C:\Users\dbrademan\Documents\Visual Studio 2015\Projects\FAIMS MzXML Generator\FAIMS MzXML Generator\obj\x86\Debug\FAIMS MzXML Generator.pdb
