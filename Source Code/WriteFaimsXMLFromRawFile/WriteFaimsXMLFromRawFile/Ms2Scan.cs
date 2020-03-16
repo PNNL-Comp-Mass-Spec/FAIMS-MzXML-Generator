@@ -57,7 +57,7 @@ namespace WriteFaimsXMLFromRawFile
 
             var filterParams = this.filterLine.Split(' ');
 
-            string activationType = "HCD";
+            var activationType = "HCD";
 
             foreach (var param in filterParams)
             {

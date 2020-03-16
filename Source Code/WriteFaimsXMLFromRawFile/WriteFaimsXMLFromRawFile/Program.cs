@@ -117,18 +117,22 @@ namespace WriteFaimsXMLFromRawFile
 
         private static string HashRawFile(string filePath)
         {
+            ConsoleMsgUtils.ShowDebug("Computing the SHA-1 Hash of the .raw file");
+
             var returnString = "";
-            using (FileStream fs = new FileStream(filePath, FileMode.Open))
-            using (BufferedStream bs = new BufferedStream(fs))
+            using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (var bs = new BufferedStream(fs))
             {
-                using (SHA1Managed sha1 = new SHA1Managed())
+                using (var sha1 = new SHA1Managed())
                 {
-                    byte[] hash = sha1.ComputeHash(bs);
-                    StringBuilder formatted = new StringBuilder(2 * hash.Length);
-                    foreach (byte b in hash)
+                    var hash = sha1.ComputeHash(bs);
+                    var formatted = new StringBuilder(2 * hash.Length);
+                    foreach (var b in hash)
                     {
                         formatted.AppendFormat("{0:X2}", b);
                     }
+
+                    ConsoleMsgUtils.ShowDebugCustom(string.Format("... {0}", formatted), emptyLinesBeforeMessage: 0);
 
                     returnString += formatted.ToString().ToLower() + "\" />";
                 }
@@ -139,50 +143,23 @@ namespace WriteFaimsXMLFromRawFile
 
         private static List<double> GetUniqueCvValues(ThermoRawFile rawFile)
         {
-            List<double> returnList = new List<double>();
+            var returnList = new List<double>();
 
             var numScans = rawFile.LastSpectrumNumber;
 
-            for (int i = 1; i <= numScans; i++)
+            for (var i = 1; i <= numScans; i++)
             {
-                var filterLine = rawFile.GetScanFilter(i).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                var filterLine = rawFile.GetScanFilter(i).Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (var param in filterLine)
                 {
                     if (param.Contains("cv="))
                     {
-                        var cv = Double.Parse(param.Split('=')[1]);
+                        var cv = double.Parse(param.Split('=')[1]);
 
                         if (!returnList.Contains(cv))
                         {
                             returnList.Add(cv);
-                        }
-                    }
-                }                
-            }
-
-            return returnList;
-        }
-
-        private static List<int> FindAllTargetScans(double CV, ThermoRawFile rawFile)
-        {
-            var returnList = new List<int>();
-
-            var numScans = rawFile.LastSpectrumNumber;
-
-            for (int i = 1; i <= numScans; i++)
-            {
-                var filterLine = rawFile.GetScanFilter(i).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-                foreach (var param in filterLine)
-                {
-                    if (param.Contains("cv="))
-                    {
-                        var cv = Double.Parse(param.Split('=')[1]);
-
-                        if (cv == CV)
-                        {
-                            returnList.Add(i);
                         }
                     }
                 }
@@ -191,7 +168,33 @@ namespace WriteFaimsXMLFromRawFile
             return returnList;
         }
 
-        private static string WriteHeader(StreamWriter writer, string filePath, ThermoRawFile rawFile, string hash, List<int> targetScans)
+        private static List<int> FindAllTargetScans(double targetCV, ThermoRawFile rawFile)
+        {
+            var returnList = new List<int>();
+
+            var numScans = rawFile.LastSpectrumNumber;
+
+            for (var i = 1; i <= numScans; i++)
+            {
+                var filterLine = rawFile.GetScanFilter(i).Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var param in filterLine)
+                {
+                    if (!param.Contains("cv=") ||
+                        !double.TryParse(param.Split('=')[1], out var cv))
+                        continue;
+
+                    if (Math.Abs(cv - targetCV) < float.Epsilon)
+                    {
+                        returnList.Add(i);
+                    }
+                }
+            }
+
+            return returnList;
+        }
+
+        private static void WriteHeader(TextWriter writer, string filePath, ThermoRawFile rawFile, string hash, IReadOnlyCollection<int> targetScans)
         {
             var sb = new StringBuilder();
 
@@ -213,13 +216,13 @@ namespace WriteFaimsXMLFromRawFile
             sb.AppendLine("   <software type=\"conversion\" name=\"WriteFaimsXMLFromRawFile\" version=\"1.0\" />");
             sb.Append("  </dataProcessing>");
 
-            var returnString = sb.ToString();
-            byteTracker(returnString);
-            writer.WriteLine(returnString);
-            return returnString;
+            var headerText = sb.ToString();
+            byteTracker(headerText);
+
+            writer.WriteLine(headerText);
         }
 
-        private static string WriteMsRunTag(ThermoRawFile rawFile, List<int> targetScans)
+        private static string WriteMsRunTag(ThermoRawFile rawFile, IReadOnlyCollection<int> targetScans)
         {
             var returnString = " <msRun scanCount=\"" + targetScans.Count + "\" startTime=\"";
             var startTime = "PT" + Math.Round(rawFile.GetMsScan(targetScans.First()).RetentionTime * 60, 8) + "S\" ";
@@ -230,8 +233,8 @@ namespace WriteFaimsXMLFromRawFile
         }
 
         private static string WriteParentFileTag(string filePath, string hash)
-        { 
-            
+        {
+
             var returnString = "  <parentFile fileName=\"" + Path.GetFileName(filePath) + "\" fileType=\"RAWData\" fileSha1=\"" + hash;
 
             return returnString;
@@ -239,37 +242,43 @@ namespace WriteFaimsXMLFromRawFile
 
         private static string GetIonizationSource(ThermoRawFile rawFile)
         {
-            var filterLine = rawFile.GetScanFilter(1).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var filterLine = rawFile.GetScanFilter(1);
+            var filterLineParts = filterLine.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            foreach (var param in filterLine)
+            foreach (var param in filterLineParts)
             {
                 if (param.Equals("NSI"))
                 {
-                    return "NSI";
-                } 
-                else if (param.Equals("ESI"))
+                    return param;
+                }
+
+                if (param.Equals("ESI"))
                 {
-                    return "ESI";
+                    return param;
                 }
             }
+
             return "Unknown";
         }
 
         private static string GetMzAnalyzer(ThermoRawFile rawFile)
         {
-            var filterLine = rawFile.GetScanFilter(1).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var filterLine = rawFile.GetScanFilter(1);
+            var filterLineParts = filterLine.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            foreach (var param in filterLine)
+            foreach (var param in filterLineParts)
             {
                 if (param.Equals("FTMS"))
                 {
-                    return "FTMS";
+                    return param;
                 }
-                else if (param.Equals("ITMS"))
+
+                if (param.Equals("ITMS"))
                 {
-                    return "ITMS";
+                    return param;
                 }
             }
+
             return "Unknown";
         }
 
@@ -285,18 +294,18 @@ namespace WriteFaimsXMLFromRawFile
             }
         }
 
-        private static string HashMzXML(StreamWriter writer, string filePath)
+        private static string HashMzXML(string filePath)
         {
             var returnString = "";
 
-            using (FileStream fs = new FileStream(filePath, FileMode.Open))
-            using (BufferedStream bs = new BufferedStream(fs))
+            using (var fs = new FileStream(filePath, FileMode.Open))
+            using (var bs = new BufferedStream(fs))
             {
-                using (SHA1Managed sha1 = new SHA1Managed())
+                using (var sha1 = new SHA1Managed())
                 {
-                    byte[] hash = sha1.ComputeHash(bs);
-                    StringBuilder formatted = new StringBuilder(2 * hash.Length);
-                    foreach (byte b in hash)
+                    var hash = sha1.ComputeHash(bs);
+                    var formatted = new StringBuilder(2 * hash.Length);
+                    foreach (var b in hash)
                     {
                         formatted.AppendFormat("{0:X2}", b);
                     }

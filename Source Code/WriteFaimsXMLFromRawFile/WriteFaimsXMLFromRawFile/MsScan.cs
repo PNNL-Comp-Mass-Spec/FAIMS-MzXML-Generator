@@ -114,7 +114,7 @@ namespace WriteFaimsXMLFromRawFile
             var mZs = spectrum.GetMasses();
             var intensities = spectrum.GetIntensities();
 
-            for (int i = 0; i < mZs.Length; i++)
+            for (var i = 0; i < mZs.Length; i++)
             {
                 var floatValue = Convert.ToSingle(mZs[i]);
                 var bigEndianFloat = FloatToBigEndian(floatValue);
@@ -134,7 +134,7 @@ namespace WriteFaimsXMLFromRawFile
             var byteArray = byteList.ToArray();
 
             return Convert.ToBase64String(byteArray);
-        } 
+        }
 
         private static byte[] FloatToBigEndian(Single floatValue)
         {
