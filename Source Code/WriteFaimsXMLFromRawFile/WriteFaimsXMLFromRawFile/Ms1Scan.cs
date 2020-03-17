@@ -71,18 +71,18 @@ namespace WriteFaimsXMLFromRawFile
             sb.AppendLine(this.peaks.ToXML(3));
 
             // advance the byteTracker for Ms2 Indices
-            Program.byteTracker(sb.ToString(), true);
+            Program.ByteTracker(sb.ToString(), true);
 
             foreach (var ms2 in ms2s)
             {
                 var ms2String = ms2.ToXML();
                 // advance byteTracker for the Ms2 Entry
-                Program.byteTracker(ms2String);
+                Program.ByteTracker(ms2String);
                 sb.AppendLine(ms2String);
             }
 
             sb.Append("  </scan>");
-            Program.byteTracker("  </scan>");
+            Program.ByteTracker("  </scan>");
             return sb.ToString();
         }
 

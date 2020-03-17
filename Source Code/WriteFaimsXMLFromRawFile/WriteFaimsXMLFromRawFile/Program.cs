@@ -397,7 +397,7 @@ namespace WriteFaimsXMLFromRawFile
             sb.Append("  </dataProcessing>");
 
             var headerText = sb.ToString();
-            byteTracker(headerText);
+            ByteTracker(headerText);
 
             writer.WriteLine(headerText);
         }
@@ -464,7 +464,7 @@ namespace WriteFaimsXMLFromRawFile
             return "Unknown";
         }
 
-        public static void byteTracker(string writtenString, bool hasNewLineChars = false)
+        public static void ByteTracker(string writtenString, bool hasNewLineChars = false)
         {
             if (hasNewLineChars)
             {
