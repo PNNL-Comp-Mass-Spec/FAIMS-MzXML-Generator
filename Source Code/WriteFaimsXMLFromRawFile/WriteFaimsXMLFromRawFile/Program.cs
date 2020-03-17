@@ -438,6 +438,7 @@ namespace WriteFaimsXMLFromRawFile
                 }
             }
 
+            ConsoleMsgUtils.ShowWarning("Unrecognized ionization source; filter line does not contain NSI or ESI: " + filterLine);
             return "Unknown";
         }
 
@@ -459,6 +460,7 @@ namespace WriteFaimsXMLFromRawFile
                 }
             }
 
+            ConsoleMsgUtils.ShowWarning("Unrecognized MzAnalyzer; filter line does not contain FTMS or ITMS: " + filterLine);
             return "Unknown";
         }
 
