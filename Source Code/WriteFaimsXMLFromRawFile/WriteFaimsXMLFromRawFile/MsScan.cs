@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using CSMSL;
 using CSMSL.IO.Thermo;
+using CSMSL.Spectral;
 
 namespace WriteFaimsXMLFromRawFile
 {
@@ -63,7 +65,7 @@ namespace WriteFaimsXMLFromRawFile
             this.retentionTime = "PT" + Math.Round(rawFile.GetRetentionTime(num) * 60, 8) + "S";
             this.totIonCurrent = spectrum.TotalIonCurrent;
 
-            var encodedPeaks = "";
+            string encodedPeaks;
             if (peaksCount == 0)
             {
                 this.lowMz = 0;
@@ -98,7 +100,8 @@ namespace WriteFaimsXMLFromRawFile
                 {
                     return "Full";
                 }
-                else if (param.Equals("SIM"))
+
+                if (param.Equals("SIM"))
                 {
                     return "SIM";
                 }
@@ -107,7 +110,7 @@ namespace WriteFaimsXMLFromRawFile
             return returnString;
         }
 
-        private static string Base64EncodeMsData(ThermoSpectrum spectrum)
+        private static string Base64EncodeMsData(ISpectrum spectrum)
         {
             var byteList = new List<byte>();
 
@@ -147,23 +150,18 @@ namespace WriteFaimsXMLFromRawFile
         {
             if (number < 1000000)
             {
-                return number.ToString();
+                return number.ToString(CultureInfo.InvariantCulture);
             }
-            else
+
+            var exponent = Math.Floor(Math.Log10(number));
+            var prefix = Math.Round(number / Math.Pow(10, exponent), 5);
+
+            if (exponent < 10)
             {
-                var exponent = Math.Floor(Math.Log10(number));
-                var prefix = Math.Round(number / Math.Pow(10, exponent), 5);
-
-                if (exponent < 10)
-                {
-                    return "" + prefix + "e+00" + exponent;
-                }
-                else
-                {
-                    return "" + prefix + "e+0" + exponent;
-                }
-
+                return "" + prefix + "e+00" + exponent;
             }
+
+            return "" + prefix + "e+0" + exponent;
         }
 
     }

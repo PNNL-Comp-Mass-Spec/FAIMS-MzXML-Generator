@@ -31,11 +31,16 @@ namespace WriteFaimsXMLFromRawFile
 
         public static Ms1Scan Create(MsScan scan)
         {
-            var ms1 = new Ms1Scan(scan.num, scan.msLevel, scan.peaksCount, scan.polarity, scan.scanType, scan.filterLine, scan.retentionTime, scan.lowMz,
-                scan.highMz, scan.basePeakMz, scan.basePeakIntensity, scan.totIonCurrent, scan.peaks);
-
-            // initialize list to hold references to Ms2Scans
-            ms1.ms2s = new List<Ms2Scan>();
+            var ms1 = new Ms1Scan(
+                scan.num, scan.msLevel, scan.peaksCount,
+                scan.polarity, scan.scanType, scan.filterLine,
+                scan.retentionTime, scan.lowMz, scan.highMz,
+                scan.basePeakMz, scan.basePeakIntensity,
+                scan.totIonCurrent, scan.peaks)
+            {
+                // Initialize list to hold references to Ms2Scans
+                ms2s = new List<Ms2Scan>()
+            };
 
             return ms1;
         }
@@ -55,7 +60,7 @@ namespace WriteFaimsXMLFromRawFile
             this.filterLine = FixFilterLine();
 
             var sb = new StringBuilder();
-           
+
             sb.AppendLine("  <scan num=\"" + ByteVariables.currentScan++ + "\"");
             sb.AppendLine("   msLevel=\"" + this.msLevel + "\"");
             sb.AppendLine("   peaksCount=\"" + this.peaksCount + "\"");
