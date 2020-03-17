@@ -38,28 +38,28 @@ namespace WriteFaimsXMLFromRawFile
             return ms2;
         }
 
-        public void AddMs2ScanParameters(ThermoRawFile rawfile)
+        public void AddMs2ScanParameters(ThermoRawFile rawFile)
         {
             // grab precursorMz from raw file
-            var precursorMz = Math.Round(rawfile.GetPrecursorMz(this.num), 8);
+            var precursorMzValue = Math.Round(rawFile.GetPrecursorMz(this.num), 8);
 
-            var parentSpectrum = rawfile.GetMsScan(rawfile.GetParentSpectrumNumber(this.num)).MassSpectrum;
+            var parentSpectrum = rawFile.GetMsScan(rawFile.GetParentSpectrumNumber(this.num)).MassSpectrum;
 
-            var precursorIntensity = 0;
+            var precursorIntensity = 0.0;
             try
             {
-                Math.Round(parentSpectrum.GetClosestPeak(precursorMz, .1).Intensity, 2);
+                precursorIntensity = Math.Round(parentSpectrum.GetClosestPeak(precursorMzValue, .1).Intensity, 2);
             }
             catch
             {
-                // couldn't find precursor mass in MS1. That's fine i guess. 
+                // couldn't find precursor mass in MS1. That's fine i guess.
             }
 
-            var filterParams = this.filterLine.Split(' ');
+            var filterLineParts = this.filterLine.Split(' ');
 
             var activationType = "HCD";
 
-            foreach (var param in filterParams)
+            foreach (var param in filterLineParts)
             {
                 if (param.Contains("@"))
                 {
@@ -73,7 +73,7 @@ namespace WriteFaimsXMLFromRawFile
                 }
             }
 
-            this.precursorMz = new PrecursorMz(precursorIntensity, activationType, precursorMz);
+            this.precursorMz = new PrecursorMz(precursorIntensity, activationType, precursorMzValue);
         }
 
         public string ToXML()
@@ -109,20 +109,20 @@ namespace WriteFaimsXMLFromRawFile
 
         private string FixFilterLine()
         {
-            // split filterline by spaces. remove empty entries
-            var parameters = this.filterLine.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            // split filterLine by spaces. remove empty entries
+            var filterLineParts = this.filterLine.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            for (var i = 0; i < parameters.Count; i++)
+            for (var i = 0; i < filterLineParts.Count; i++)
             {
-                var item = parameters[i];
+                var item = filterLineParts[i];
                 if (item.Contains("cv=") || item.Equals("t"))
                 {
-                    parameters.RemoveAt(i);
+                    filterLineParts.RemoveAt(i);
                     i--;
                 }
             }
 
-            return String.Join(" ", parameters.ToArray());
+            return string.Join(" ", filterLineParts.ToArray());
         }
     }
 }

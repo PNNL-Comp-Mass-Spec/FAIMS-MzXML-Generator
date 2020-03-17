@@ -90,9 +90,9 @@ namespace WriteFaimsXMLFromRawFile
         {
             var returnString = "Unknown";
 
-            var filterLine = this.filterLine.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var filterLineParts = this.filterLine.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            foreach (var param in filterLine)
+            foreach (var param in filterLineParts)
             {
                 if (param.Equals("Full"))
                 {
@@ -140,7 +140,7 @@ namespace WriteFaimsXMLFromRawFile
         {
             var littleEndian = BitConverter.GetBytes(floatValue);
 
-            return new byte[4] { littleEndian[3], littleEndian[2], littleEndian[1], littleEndian[0] };
+            return new[] { littleEndian[3], littleEndian[2], littleEndian[1], littleEndian[0] };
         }
 
         public string FormatSpecialNumber(double number)

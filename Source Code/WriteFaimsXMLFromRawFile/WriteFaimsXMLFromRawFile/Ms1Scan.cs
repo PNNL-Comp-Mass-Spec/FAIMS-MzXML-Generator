@@ -88,20 +88,20 @@ namespace WriteFaimsXMLFromRawFile
 
         private string FixFilterLine()
         {
-            // split filterline by spaces. remove empty entries
-            var parameters = this.filterLine.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            // split filterLine by spaces. remove empty entries
+            var filterLineParts = filterLine.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            for (var i = 0; i < parameters.Count; i++)
+            for (var i = 0; i < filterLineParts.Count; i++)
             {
-                var item = parameters[i];
+                var item = filterLineParts[i];
                 if (item.Contains("cv="))
                 {
-                    parameters.RemoveAt(i);
+                    filterLineParts.RemoveAt(i);
                     i--;
                 }
             }
 
-            return String.Join(" ", parameters.ToArray());
+            return string.Join(" ", filterLineParts.ToArray());
         }
     }
 }
