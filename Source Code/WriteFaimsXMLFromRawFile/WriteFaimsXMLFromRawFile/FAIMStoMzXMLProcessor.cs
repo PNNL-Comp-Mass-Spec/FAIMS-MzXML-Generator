@@ -182,8 +182,15 @@ namespace WriteFaimsXMLFromRawFile
                 // quickly hash the raw file before opening it
                 var fileSha1 = HashRawFile(filePath);
 
+                // Disable loading the method
+                // Method loading doesn't work on Linux and this program doesn't need that information
+                var readerOptions = new ThermoReaderOptions
+                {
+                    LoadMSMethodInfo = false
+                };
+
                 // open up the raw file connection
-                var reader = new XRawFileIO(filePath);
+                var reader = new XRawFileIO(filePath, readerOptions);
 
                 // get all unique CV values from scans
                 var cvValues = GetUniqueCvValues(reader);
