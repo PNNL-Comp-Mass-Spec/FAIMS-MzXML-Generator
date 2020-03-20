@@ -42,7 +42,7 @@ namespace WriteFaimsXMLFromRawFile
                     Console.WriteLine();
                     Console.WriteLine(ConsoleMsgUtils.WrapParagraph(
                         "This program converts a Thermo .raw file with FAIMS scans into a series of .mzXML files, " +
-                        "creating one .mzXML file for each FAIMS compensation voltage (CV) value in the .raw file"));
+                        "creating one .mzXML file for each FAIMS compensation voltage (CV) value in the .raw file."));
                     Console.WriteLine();
                     Console.WriteLine("Syntax:");
                     Console.WriteLine("{0} InstrumentFile.raw [Output_Directory_Path]", Path.GetFileName(exePath));
@@ -52,9 +52,10 @@ namespace WriteFaimsXMLFromRawFile
 
                     // ReSharper disable StringLiteralTypo
                     Console.WriteLine("Program written by Dain Brademan for the Joshua Coon Research Group (University of Wisconsin) in 2018");
-                    Console.WriteLine("Functionality expanded by Matthew Monroe for PNNL (Richland, WA) in 2020");
-                    Console.WriteLine("E-mail: matthew.monroe@pnnl.gov or proteomics@pnnl.gov");
-                    Console.WriteLine("Website: https://omics.pnl.gov/ or https://panomics.pnnl.gov/");
+                    Console.WriteLine("Converted to use ThermoFisher.CommonCore DLLs by Matthew Monroe for PNNL (Richland, WA) in 2020");
+                    Console.WriteLine("E-mail: brademan@wisc.edu or matthew.monroe@pnnl.gov or proteomics@pnnl.gov");
+                    Console.WriteLine("Website: https://github.com/PNNL-Comp-Mass-Spec/FAIMS-MzXML-Generator/releases or");
+                    Console.WriteLine("         https://github.com/coongroup/FAIMS-MzXML-Generator");
                     // ReSharper restore StringLiteralTypo
                     return;
                 }
