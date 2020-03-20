@@ -52,12 +52,14 @@ namespace FAIMS_MzXML_Generator
 
         private void SelectFolder()
         {
-            FolderBrowserDialog ofd = new FolderBrowserDialog();
-            DialogResult dr = ofd.ShowDialog();
-            if (dr == DialogResult.OK)
-            {
-                textBox2.Text = ofd.SelectedPath;
-            }
+            var browser = new ShFolderBrowser.FolderBrowser.FolderBrowser();
+
+            var success = browser.BrowseForFolder(txtOutputDirectory.Text);
+
+            if (!success)
+                return;
+
+            txtOutputDirectory.Text = browser.FolderPath;
         }
 
         private void button4_Click(object sender, EventArgs e)
