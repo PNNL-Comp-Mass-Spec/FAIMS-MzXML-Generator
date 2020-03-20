@@ -92,17 +92,17 @@ namespace FAIMS_MzXML_Generator
                 return;
             }
 
+            if (string.IsNullOrWhiteSpace(txtOutputDirectory.Text))
             {
-                string message = "Please Select An Output Destination.";
-                string caption = "Error Detected in Input";
-                MessageBoxButtons buttons = MessageBoxButtons.OK;
-                DialogResult result;
+                var firstFile = (string)lstInputFiles.Items[0];
 
-                // Displays the MessageBox.
-
-                result = MessageBox.Show(message, caption, buttons);
+                var firstFileInfo = new FileInfo(firstFile);
+                txtOutputDirectory.Text = firstFileInfo.DirectoryName;
             }
-            else
+
+            var filesToBeSplit = lstInputFiles.Items;
+
+            foreach (string item in filesToBeSplit)
             {
                 var filesToBeSplit = listBox1.Items;
 
@@ -123,8 +123,10 @@ namespace FAIMS_MzXML_Generator
                     process.WaitForExit();
                 }
 
-                MessageBox.Show("Done.");
             }
+
+            MessageBox.Show("Done.");
+
         }
     }
 }
