@@ -139,17 +139,17 @@ namespace WriteFaimsXMLFromRawFile
             return scanInfoFirstScan;
         }
 
-        public string ToXML()
+        public string ToXML(FAIMStoMzXMLProcessor processor)
         {
             // place scan byte depth into our tracking list
-            var index = new Index(ByteVariables.currentScan, ByteVariables.byteDepth + 3);
-            ByteVariables.scanOffsets.Add(index);
+            var index = new Index(processor.ByteTracking.CurrentScan, processor.ByteTracking.ByteDepth + 3);
+            processor.ByteTracking.ScanOffsets.Add(index);
 
             this.filterLine = FixFilterLine();
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("   <scan num=\"" + ByteVariables.currentScan++ + "\"");
+            sb.AppendLine("   <scan num=\"" + processor.ByteTracking.CurrentScan + "\"");
             sb.AppendLine("    msLevel=\"" + this.msLevel + "\"");
             sb.AppendLine("    peaksCount=\"" + this.peaksCount + "\"");
             sb.AppendLine("    polarity=\"" + this.polarity + "\"");
@@ -167,6 +167,7 @@ namespace WriteFaimsXMLFromRawFile
             sb.AppendLine(this.peaks.ToXML(4));
             sb.Append("   </scan>");
 
+            processor.ByteTracking.CurrentScan++;
             return sb.ToString();
         }
 

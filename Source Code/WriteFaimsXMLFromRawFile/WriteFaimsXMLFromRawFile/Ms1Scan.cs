@@ -51,17 +51,18 @@ namespace WriteFaimsXMLFromRawFile
         }
 
         // for outputting valid MzXML strings to file
-        public string ToXML()
+        public string ToXML(FAIMStoMzXMLProcessor processor)
         {
             // place scan byte depth into our tracking list
-            var index = new Index(ByteVariables.currentScan, ByteVariables.byteDepth + 2);
-            ByteVariables.scanOffsets.Add(index);
+            var index = new Index(processor.ByteTracking.CurrentScan, processor.ByteTracking.ByteDepth + 2);
+            processor.ByteTracking.ScanOffsets.Add(index);
 
             this.filterLine = FixFilterLine();
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("  <scan num=\"" + ByteVariables.currentScan++ + "\"");
+            sb.AppendLine("  <scan num=\"" + processor.ByteTracking.CurrentScan + "\"");
+
             sb.AppendLine("   msLevel=\"" + this.msLevel + "\"");
             sb.AppendLine("   peaksCount=\"" + this.peaksCount + "\"");
             sb.AppendLine("   polarity=\"" + this.polarity + "\"");
@@ -76,18 +77,22 @@ namespace WriteFaimsXMLFromRawFile
             sb.AppendLine(this.peaks.ToXML(3));
 
             // advance the byteTracker for Ms2 Indices
-            Program.ByteTracker(sb.ToString(), true);
+            processor.ByteTracker(sb.ToString(), true);
 
             foreach (var ms2 in ms2s)
             {
-                var ms2String = ms2.ToXML();
-                // advance byteTracker for the Ms2 Entry
-                Program.ByteTracker(ms2String);
+                var ms2String = ms2.ToXML(processor);
                 sb.AppendLine(ms2String);
+
+                // advance byteTracker for the Ms2 Entry
+                processor.ByteTracker(ms2String);
             }
 
             sb.Append("  </scan>");
-            Program.ByteTracker("  </scan>");
+            processor.ByteTracker("  </scan>");
+
+            processor.ByteTracking.CurrentScan++;
+
             return sb.ToString();
         }
 
