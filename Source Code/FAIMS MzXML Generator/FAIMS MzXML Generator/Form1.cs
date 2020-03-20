@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using System.Diagnostics;
 using System.IO;
 
 namespace FAIMS_MzXML_Generator
@@ -134,7 +133,7 @@ namespace FAIMS_MzXML_Generator
                     return;
                 }
 
-                var failureMessage = string.Format("Error encountered while processing {0} {1}", failureCount, failureCount == 1 ? "file" : "files"); ;
+                var failureMessage = string.Format("Error encountered while processing {0} {1}", failureCount, failureCount == 1 ? "file" : "files");
                 MessageBox.Show(failureMessage, "Errors Encountered", MessageBoxButtons.OK);
             }
             catch (Exception ex)
