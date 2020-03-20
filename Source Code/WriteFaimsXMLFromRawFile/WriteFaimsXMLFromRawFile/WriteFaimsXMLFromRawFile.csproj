@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ByteVariables.cs" />
+    <Compile Include="FAIMStoMzXMLProcessor.cs" />
     <Compile Include="Index.cs" />
     <Compile Include="Ms1Scan.cs" />
     <Compile Include="Ms2Scan.cs" />
