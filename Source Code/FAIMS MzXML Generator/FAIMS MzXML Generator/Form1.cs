@@ -81,52 +81,66 @@ namespace FAIMS_MzXML_Generator
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (lstInputFiles.Items.Count < 1)
+            try
             {
-                var message = "Please Select on or more FAIMS-based Thermo .raw files to process.";
-                var caption = "Error Detected in Input";
-                var buttons = MessageBoxButtons.OK;
+                if (lstInputFiles.Items.Count < 1)
+                {
+                    var errorMessage = "Please Select one or more FAIMS-based Thermo .raw files to process.";
+                    var caption = "Error Detected in Input";
+                    var buttons = MessageBoxButtons.OK;
 
-                // Displays the MessageBox.
-                MessageBox.Show(message, caption, buttons);
-                return;
-            }
+                    // Displays the MessageBox.
+                    MessageBox.Show(errorMessage, caption, buttons);
+                    return;
+                }
 
-            if (string.IsNullOrWhiteSpace(txtOutputDirectory.Text))
-            {
-                var firstFile = (string)lstInputFiles.Items[0];
+                if (string.IsNullOrWhiteSpace(txtOutputDirectory.Text))
+                {
+                    var firstFile = (string)lstInputFiles.Items[0];
 
-                var firstFileInfo = new FileInfo(firstFile);
-                txtOutputDirectory.Text = firstFileInfo.DirectoryName;
-            }
+                    var firstFileInfo = new FileInfo(firstFile);
+                    txtOutputDirectory.Text = firstFileInfo.DirectoryName;
+                }
 
-            var filesToBeSplit = lstInputFiles.Items;
+                var filesToBeSplit = lstInputFiles.Items;
 
-            foreach (string item in filesToBeSplit)
-            {
-                var filesToBeSplit = listBox1.Items;
+                var processor = new WriteFaimsXMLFromRawFile.FAIMStoMzXMLProcessor();
+
+                var successCount = 0;
+                var failureCount = 0;
 
                 foreach (string item in filesToBeSplit)
                 {
-                    Process process = new Process();
-                    ProcessStartInfo startInfo = new ProcessStartInfo();
-                    startInfo.CreateNoWindow = false;
-                    startInfo.UseShellExecute = false;
-                    startInfo.FileName = "Rawfile To MzXML/WriteFaimsXMLFromRawFile.exe";
-                    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                    startInfo.Arguments = "\"" + item + "\" \"" + textBox2.Text + "\"";
+                    var success = processor.Process(item, txtOutputDirectory.Text);
 
-                    process.StartInfo = startInfo;
-                    process.Start();
-
-                    // until we are done
-                    process.WaitForExit();
+                    if (success)
+                        successCount++;
+                    else
+                        failureCount++;
                 }
 
+                if (successCount > 0 && failureCount == 0)
+                {
+                    var message = string.Format("Converted {0} {1} to .mzXML files", successCount, successCount == 1 ? "file" : "files");
+                    MessageBox.Show(message, "Processing Complete", MessageBoxButtons.OK);
+                    return;
+                }
+
+                if (successCount > 0 && failureCount > 0)
+                {
+                    var mixedSuccessMessage = string.Format("Successfully converted {0} {1} to .mzXML files", successCount, successCount == 1 ? "file" : "files") +
+                                              string.Format("; error encountered while processing {0} {1}", failureCount, failureCount == 1 ? "file" : "files");
+                    MessageBox.Show(mixedSuccessMessage, "Errors Encountered", MessageBoxButtons.OK);
+                    return;
+                }
+
+                var failureMessage = string.Format("Error encountered while processing {0} {1}", failureCount, failureCount == 1 ? "file" : "files"); ;
+                MessageBox.Show(failureMessage, "Errors Encountered", MessageBoxButtons.OK);
             }
-
-            MessageBox.Show("Done.");
-
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error converting .raw files: " + ex.Message);
+            }
         }
     }
 }
