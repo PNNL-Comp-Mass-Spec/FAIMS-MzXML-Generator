@@ -37,6 +37,7 @@
             this.lstInputFiles = new System.Windows.Forms.ListBox();
             this.cmdClearAll = new System.Windows.Forms.Button();
             this.cmdRemoveFile = new System.Windows.Forms.Button();
+            this.txtProcessingLog = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // cmdProcessFiles
@@ -132,11 +133,25 @@
             this.cmdRemoveFile.UseVisualStyleBackColor = true;
             this.cmdRemoveFile.Click += new System.EventHandler(this.cmdRemoveFile_Click);
             // 
+            // txtProcessingLog
+            // 
+            this.txtProcessingLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtProcessingLog.Location = new System.Drawing.Point(16, 309);
+            this.txtProcessingLog.Multiline = true;
+            this.txtProcessingLog.Name = "txtProcessingLog";
+            this.txtProcessingLog.ReadOnly = true;
+            this.txtProcessingLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtProcessingLog.Size = new System.Drawing.Size(651, 164);
+            this.txtProcessingLog.TabIndex = 23;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(689, 311);
+            this.ClientSize = new System.Drawing.Size(689, 485);
+            this.Controls.Add(this.txtProcessingLog);
             this.Controls.Add(this.cmdRemoveFile);
             this.Controls.Add(this.cmdClearAll);
             this.Controls.Add(this.lstInputFiles);
@@ -148,7 +163,7 @@
             this.Controls.Add(this.label1);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "FAIMS MzXML Generator";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -165,6 +180,7 @@
         private System.Windows.Forms.ListBox lstInputFiles;
         private System.Windows.Forms.Button cmdClearAll;
         private System.Windows.Forms.Button cmdRemoveFile;
+        private System.Windows.Forms.TextBox txtProcessingLog;
     }
 }
 

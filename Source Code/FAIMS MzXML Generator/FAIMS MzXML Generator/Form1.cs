@@ -169,6 +169,38 @@ namespace FAIMS_MzXML_Generator
             }
         }
 
+        private void AppendProcessingStatus(string message, bool precedeWithBlankLink = false)
+        {
+            // Cross thread - so you don't get the cross-threading exception
+            if (InvokeRequired)
+            {
+                BeginInvoke((MethodInvoker)delegate
+                {
+                    AppendProcessingStatus(message, precedeWithBlankLink);
+                });
+                return;
+            }
+
+            if (precedeWithBlankLink)
+            {
+                txtProcessingLog.AppendText(Environment.NewLine);
+            }
+
+            txtProcessingLog.AppendText("  " + message + Environment.NewLine);
+
+            Application.DoEvents();
+        }
+
+        private void RegisterEvents(IEventNotifier processingClass)
+        {
+            // processingClass.ProgressUpdate += ProcessingClass_ProgressUpdate;
+            processingClass.DebugEvent += ProcessingClass_DebugEvent;
+            processingClass.ErrorEvent += ProcessingClass_ErrorEvent;
+            processingClass.StatusEvent += ProcessingClass_StatusEvent;
+            processingClass.WarningEvent += ProcessingClass_WarningEvent;
+        }
+
+
         private void AutoDefineOutputDirectory()
         {
             if (lstInputFiles.Items.Count == 0)
@@ -227,5 +259,43 @@ namespace FAIMS_MzXML_Generator
             mProcessingSuccess = mProcessor.ProcessSingleFile(mInputFilePath, mOutputDirectoryPath);
         }
 
+        private void ProcessingClass_DebugEvent(string message)
+        {
+            AppendProcessingStatus("  " + message);
+        }
+
+        private void ProcessingClass_ErrorEvent(string message, Exception ex)
+        {
+            ShowErrorMessage(message, ex);
+        }
+
+        private void ProcessingClass_StatusEvent(string message)
+        {
+            AppendProcessingStatus(message);
+        }
+
+        private void ProcessingClass_WarningEvent(string message)
+        {
+            AppendProcessingStatus(message, true);
+        }
+
+        private void ShowErrorMessage(string message, Exception ex = null)
+        {
+            if (ex == null || message.Contains(ex.Message))
+            {
+                AppendProcessingStatus(message, true);
+            }
+            else
+            {
+                AppendProcessingStatus(message + ": " + ex.Message, true);
+            }
+
+            if (ex == null)
+                return;
+
+            var stackTrace = StackTraceFormatter.GetExceptionStackTraceMultiLine(ex, true, false);
+            AppendProcessingStatus(stackTrace, true);
+
+        }
     }
 }
