@@ -12,6 +12,7 @@ using ThermoRawFileReader;
 
 namespace WriteFaimsXMLFromRawFile
 {
+    // ReSharper disable once IdentifierTypo
     public class FAIMStoMzXMLProcessor : EventNotifier
     {
         /// <summary>
@@ -33,6 +34,7 @@ namespace WriteFaimsXMLFromRawFile
         /// <summary>
         /// Constructor
         /// </summary>
+        // ReSharper disable once IdentifierTypo
         public FAIMStoMzXMLProcessor()
         {
             ByteTracking = new ByteVariables();
@@ -283,11 +285,11 @@ namespace WriteFaimsXMLFromRawFile
                         for (var i = 0; i < ByteTracking.ScanOffsets.Count - 1; i++)
                         {
                             var offset = ByteTracking.ScanOffsets[i];
-                            writer.WriteLine("  <offset id=\"" + offset.scanNumber + "\" >" + offset.byteDepth + "</offset>");
+                            writer.WriteLine("  <offset id=\"" + offset.ScanNumber + "\" >" + offset.ByteDepth + "</offset>");
                         }
 
                         writer.WriteLine(" </index>");
-                        writer.WriteLine(" <indexOffset>" + ByteTracking.ScanOffsets.Last().byteDepth + "</indexOffset>");
+                        writer.WriteLine(" <indexOffset>" + ByteTracking.ScanOffsets.Last().ByteDepth + "</indexOffset>");
                         writer.Write(" <sha1>");
                     }
 

@@ -3,13 +3,13 @@ namespace WriteFaimsXMLFromRawFile
 {
     public class Index
     {
-        public int scanNumber;
-        public int byteDepth;
+        public int ScanNumber;
+        public int ByteDepth;
 
         public Index(int scanNumber, int byteDepth)
         {
-            this.scanNumber = scanNumber;
-            this.byteDepth = byteDepth;
+            ScanNumber = scanNumber;
+            ByteDepth = byteDepth;
         }
     }
 }
