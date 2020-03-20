@@ -46,14 +46,30 @@ namespace FAIMS_MzXML_Generator
 
         private void SelectFolder()
         {
-            var browser = new ShFolderBrowser.FolderBrowser.FolderBrowser();
+            try
+            {
+                if (string.IsNullOrWhiteSpace(txtOutputDirectory.Text))
+                {
+                    AutoDefineOutputDirectory();
+                }
 
-            var success = browser.BrowseForFolder(txtOutputDirectory.Text);
+                var browser = new Ookii.Dialogs.WinForms.VistaFolderBrowserDialog
+                {
+                    SelectedPath = txtOutputDirectory.Text
+                };
 
-            if (!success)
-                return;
+                var result = browser.ShowDialog();
 
-            txtOutputDirectory.Text = browser.FolderPath;
+                if (result == DialogResult.OK)
+                {
+                    txtOutputDirectory.Text = browser.SelectedPath;
+                }
+            }
+            catch (Exception)
+            {
+                // Ignore errors here
+            }
+
         }
 
         private void cmdClearAll_Click(object sender, EventArgs e)
@@ -140,6 +156,17 @@ namespace FAIMS_MzXML_Generator
             {
                 MessageBox.Show("Error converting .raw files: " + ex.Message);
             }
+        }
+
+        private void AutoDefineOutputDirectory()
+        {
+            if (lstInputFiles.Items.Count == 0)
+                return;
+
+            var firstFile = (string)lstInputFiles.Items[0];
+
+            var firstFileInfo = new FileInfo(firstFile);
+            txtOutputDirectory.Text = firstFileInfo.DirectoryName;
         }
     }
 }
