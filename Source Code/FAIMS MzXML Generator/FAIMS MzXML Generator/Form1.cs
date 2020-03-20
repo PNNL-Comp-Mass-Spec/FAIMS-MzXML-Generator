@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.IO;
 
 namespace FAIMS_MzXML_Generator
 {
@@ -30,17 +24,18 @@ namespace FAIMS_MzXML_Generator
 
         private void SelectFiles()
         {
-            OpenFileDialog open = new OpenFileDialog();
-
-            open.Filter = "Raw files (*.raw)|*.raw";
-            open.Multiselect = true;
-            open.Title = "Please Select FAIMS File(s) for Conversion";
+            var open = new OpenFileDialog
+            {
+                Filter = "Raw files (*.raw)|*.raw",
+                Multiselect = true,
+                Title = "Please Select FAIMS File(s) for Conversion"
+            };
 
             if (open.ShowDialog() == DialogResult.OK)
             {
-                foreach (String file in open.FileNames)
+                foreach (var file in open.FileNames)
                 {
-                    listBox1.Items.Add(file);
+                    lstInputFiles.Items.Add(file);
                 }
             }
         }
@@ -64,18 +59,18 @@ namespace FAIMS_MzXML_Generator
 
         private void button4_Click(object sender, EventArgs e)
         {
-            listBox1.Items.Clear();
+            lstInputFiles.Items.Clear();
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            var selectedItems = listBox1.SelectedItems;
+            var selectedItems = lstInputFiles.SelectedItems;
 
-            if (listBox1.SelectedIndex != -1)
+            if (lstInputFiles.SelectedIndex != -1)
             {
-                for (int i = selectedItems.Count - 1; i >= 0; i--)
+                for (var i = selectedItems.Count - 1; i >= 0; i--)
                 {
-                    listBox1.Items.Remove(selectedItems[i]);
+                    lstInputFiles.Items.Remove(selectedItems[i]);
                 }
             }
             else
@@ -86,18 +81,17 @@ namespace FAIMS_MzXML_Generator
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (listBox1.Items.Count < 1)
+            if (lstInputFiles.Items.Count < 1)
             {
-                string message = "Please Select A FAIMS File(s) For Processing.";
-                string caption = "Error Detected in Input";
-                MessageBoxButtons buttons = MessageBoxButtons.OK;
-                DialogResult result;
+                var message = "Please Select on or more FAIMS-based Thermo .raw files to process.";
+                var caption = "Error Detected in Input";
+                var buttons = MessageBoxButtons.OK;
 
                 // Displays the MessageBox.
+                MessageBox.Show(message, caption, buttons);
+                return;
+            }
 
-                result = MessageBox.Show(message, caption, buttons);
-            } 
-            else if (String.IsNullOrEmpty(textBox2.Text))
             {
                 string message = "Please Select An Output Destination.";
                 string caption = "Error Detected in Input";
