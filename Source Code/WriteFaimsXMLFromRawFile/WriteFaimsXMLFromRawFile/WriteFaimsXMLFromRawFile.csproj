@@ -35,6 +35,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CSMSL, Version=0.3.7382.19825, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Lib\CSMSL.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Private>True</Private>
     </Reference>
@@ -59,6 +63,21 @@
     <Reference Include="System.Xml">
       <Private>True</Private>
     </Reference>
+    <Reference Include="ThermoFisher.CommonCore.BackgroundSubtraction">
+      <HintPath>..\..\..\Lib\ThermoFisher.CommonCore.BackgroundSubtraction.dll</HintPath>
+    </Reference>
+    <Reference Include="ThermoFisher.CommonCore.Data">
+      <HintPath>..\..\..\Lib\ThermoFisher.CommonCore.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="ThermoFisher.CommonCore.MassPrecisionEstimator">
+      <HintPath>..\..\..\Lib\ThermoFisher.CommonCore.MassPrecisionEstimator.dll</HintPath>
+    </Reference>
+    <Reference Include="ThermoFisher.CommonCore.RawFileReader">
+      <HintPath>..\..\..\Lib\ThermoFisher.CommonCore.RawFileReader.dll</HintPath>
+    </Reference>
+    <Reference Include="ThermoRawFileReader">
+      <HintPath>..\..\..\Lib\ThermoRawFileReader.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ByteVariables.cs" />
@@ -75,21 +94,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\CSMSL\CSMSL\CSMSL.csproj">
-      <Project>{3c8c9f05-9c19-4251-95fa-05d7edc8cae6}</Project>
-      <Name>CSMSL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\CSMSL\CSMSL\IO\Thermo\Thermo.csproj">
-      <Project>{24dc85ff-e97b-4140-9614-77dd8fddd32f}</Project>
-      <Name>Thermo</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="PRISM-Library">
-      <Version>2.6.2</Version>
+      <Version>2.6.4</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(TargetPath)" "$(ProjectDir)..\..\FAIMS MzXML Generator\FAIMS MzXML Generator\Rawfile To MzXML\" /Y /D
+xcopy "$(TargetDir)PRISM.dll" "$(ProjectDir)..\..\FAIMS MzXML Generator\FAIMS MzXML Generator\Rawfile To MzXML\" /Y /D</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
