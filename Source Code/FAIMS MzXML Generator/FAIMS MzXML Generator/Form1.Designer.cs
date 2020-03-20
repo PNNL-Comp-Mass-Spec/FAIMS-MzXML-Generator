@@ -48,7 +48,7 @@
             this.cmdProcessFiles.TabIndex = 19;
             this.cmdProcessFiles.Text = "Create MzXMLs";
             this.cmdProcessFiles.UseVisualStyleBackColor = true;
-            this.cmdProcessFiles.Click += new System.EventHandler(this.button3_Click);
+            this.cmdProcessFiles.Click += new System.EventHandler(this.cmdProcessFiles_Click);
             // 
             // cmdSelectFiles
             // 
@@ -59,7 +59,7 @@
             this.cmdSelectFiles.TabIndex = 18;
             this.cmdSelectFiles.Text = "Browse";
             this.cmdSelectFiles.UseVisualStyleBackColor = true;
-            this.cmdSelectFiles.Click += new System.EventHandler(this.button1_Click);
+            this.cmdSelectFiles.Click += new System.EventHandler(this.cmsSelectFiles_Click);
             // 
             // cmdSelectOutputDirectory
             // 
@@ -70,7 +70,7 @@
             this.cmdSelectOutputDirectory.TabIndex = 17;
             this.cmdSelectOutputDirectory.Text = "Browse";
             this.cmdSelectOutputDirectory.UseVisualStyleBackColor = true;
-            this.cmdSelectOutputDirectory.Click += new System.EventHandler(this.button2_Click);
+            this.cmdSelectOutputDirectory.Click += new System.EventHandler(this.cmdSelectOutputDirectory_Click);
             // 
             // lblOutputDirectory
             // 
@@ -119,7 +119,7 @@
             this.cmdClearAll.TabIndex = 21;
             this.cmdClearAll.Text = "Clear All";
             this.cmdClearAll.UseVisualStyleBackColor = true;
-            this.cmdClearAll.Click += new System.EventHandler(this.button4_Click);
+            this.cmdClearAll.Click += new System.EventHandler(this.cmdClearAll_Click);
             // 
             // cmdRemoveFile
             // 
@@ -130,7 +130,7 @@
             this.cmdRemoveFile.TabIndex = 22;
             this.cmdRemoveFile.Text = "Remove";
             this.cmdRemoveFile.UseVisualStyleBackColor = true;
-            this.cmdRemoveFile.Click += new System.EventHandler(this.button5_Click);
+            this.cmdRemoveFile.Click += new System.EventHandler(this.cmdRemoveFile_Click);
             // 
             // Form1
             // 

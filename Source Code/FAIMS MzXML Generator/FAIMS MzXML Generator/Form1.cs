@@ -16,7 +16,7 @@ namespace FAIMS_MzXML_Generator
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void cmsSelectFiles_Click(object sender, EventArgs e)
         {
             SelectFiles();
         }
@@ -39,7 +39,7 @@ namespace FAIMS_MzXML_Generator
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void cmdSelectOutputDirectory_Click(object sender, EventArgs e)
         {
             SelectFolder();
         }
@@ -56,12 +56,12 @@ namespace FAIMS_MzXML_Generator
             txtOutputDirectory.Text = browser.FolderPath;
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void cmdClearAll_Click(object sender, EventArgs e)
         {
             lstInputFiles.Items.Clear();
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void cmdRemoveFile_Click(object sender, EventArgs e)
         {
             var selectedItems = lstInputFiles.SelectedItems;
 
@@ -78,7 +78,7 @@ namespace FAIMS_MzXML_Generator
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void cmdProcessFiles_Click(object sender, EventArgs e)
         {
             try
             {
