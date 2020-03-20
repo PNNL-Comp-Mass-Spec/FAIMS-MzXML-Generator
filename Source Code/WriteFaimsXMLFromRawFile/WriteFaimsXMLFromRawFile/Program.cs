@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Reflection;
-using CSMSL.IO.Thermo;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using PRISM;
