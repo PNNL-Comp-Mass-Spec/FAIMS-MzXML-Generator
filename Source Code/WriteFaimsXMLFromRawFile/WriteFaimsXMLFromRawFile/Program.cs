@@ -14,6 +14,8 @@ namespace WriteFaimsXMLFromRawFile
 {
     class Program
     {
+        private const string PROGRAM_DATE = "2020-03-19";
+
         /// <summary>
         /// This Regex matches scan filters of the form
         /// FTMS + p NSI cv=-45.00 Full ms
@@ -36,13 +38,20 @@ namespace WriteFaimsXMLFromRawFile
                 {
                     var exePath = ProcessFilesOrDirectoriesBase.GetAppPath();
 
+                    Console.WriteLine("WriteFaimsXMLFromRawFile version " + GetAppVersion());
+                    Console.WriteLine();
+                    Console.WriteLine(ConsoleMsgUtils.WrapParagraph(
+                        "This program converts a Thermo .raw file with FAIMS scans into a series of .mzXML files, " +
+                        "creating one .mzXML file for each FAIMS compensation voltage (CV) value in the .raw file"));
+                    Console.WriteLine();
                     Console.WriteLine("Syntax:");
-                    Console.WriteLine("{0} InstrumentFile.raw [Output_Directory_Path]", exePath);
+                    Console.WriteLine("{0} InstrumentFile.raw [Output_Directory_Path]", Path.GetFileName(exePath));
                     Console.WriteLine();
-                    Console.WriteLine("Wild cards are also supported, e.g. *.raw");
+                    Console.WriteLine("Wild cards are supported, e.g. *.raw");
                     Console.WriteLine();
+
                     // ReSharper disable StringLiteralTypo
-                    Console.WriteLine("Written by Dain Brademan for the Joshua Coon Research Group (University of Wisconsin) in 2018");
+                    Console.WriteLine("Program written by Dain Brademan for the Joshua Coon Research Group (University of Wisconsin) in 2018");
                     Console.WriteLine("Functionality expanded by Matthew Monroe for PNNL (Richland, WA) in 2020");
                     Console.WriteLine("E-mail: matthew.monroe@pnnl.gov or proteomics@pnnl.gov");
                     Console.WriteLine("Website: https://omics.pnl.gov/ or https://panomics.pnnl.gov/");
@@ -71,6 +80,10 @@ namespace WriteFaimsXMLFromRawFile
             }
         }
 
+        private static string GetAppVersion()
+        {
+            return ProcessFilesOrDirectoriesBase.GetAppVersion(PROGRAM_DATE);
+        }
 
         private static void ProcessFiles(string inputFilePathSpec, string outputDirectoryPath)
         {
