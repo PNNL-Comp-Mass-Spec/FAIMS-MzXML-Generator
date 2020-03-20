@@ -1,11 +1,20 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.IO;
+using System.Threading;
+using PRISM;
+using PRISM.Logging;
 
 namespace FAIMS_MzXML_Generator
 {
     public partial class Form1 : Form
     {
+
+        private WriteFaimsXMLFromRawFile.FAIMStoMzXMLProcessor mProcessor;
+        private string mInputFilePath;
+        private string mOutputDirectoryPath;
+        private bool mProcessingSuccess;
+
         public Form1()
         {
             InitializeComponent();
@@ -98,6 +107,8 @@ namespace FAIMS_MzXML_Generator
         {
             try
             {
+                txtProcessingLog.Clear();
+
                 if (lstInputFiles.Items.Count < 1)
                 {
                     var errorMessage = "Please Select one or more FAIMS-based Thermo .raw files to process.";
@@ -111,28 +122,28 @@ namespace FAIMS_MzXML_Generator
 
                 if (string.IsNullOrWhiteSpace(txtOutputDirectory.Text))
                 {
-                    var firstFile = (string)lstInputFiles.Items[0];
-
-                    var firstFileInfo = new FileInfo(firstFile);
-                    txtOutputDirectory.Text = firstFileInfo.DirectoryName;
+                    AutoDefineOutputDirectory();
                 }
 
                 var filesToBeSplit = lstInputFiles.Items;
 
-                var processor = new WriteFaimsXMLFromRawFile.FAIMStoMzXMLProcessor();
+                mProcessor = new WriteFaimsXMLFromRawFile.FAIMStoMzXMLProcessor();
+                RegisterEvents(mProcessor);
 
                 var successCount = 0;
                 var failureCount = 0;
 
-                foreach (string item in filesToBeSplit)
+                foreach (string inputFilePath in filesToBeSplit)
                 {
-                    var success = processor.ProcessSingleFile(item, txtOutputDirectory.Text);
+                    var success = ProcessFileThreaded(inputFilePath, txtOutputDirectory.Text);
 
                     if (success)
                         successCount++;
                     else
                         failureCount++;
                 }
+
+                mProcessor = null;
 
                 if (successCount > 0 && failureCount == 0)
                 {
@@ -168,5 +179,53 @@ namespace FAIMS_MzXML_Generator
             var firstFileInfo = new FileInfo(firstFile);
             txtOutputDirectory.Text = firstFileInfo.DirectoryName;
         }
+
+        private bool ProcessFileThreaded(string inputFilePath, string outputDirectoryPath)
+        {
+            try
+            {
+                mInputFilePath = inputFilePath;
+                mOutputDirectoryPath = outputDirectoryPath;
+
+                var processingThread = new Thread(ProcessFileWork);
+                processingThread.Start();
+
+                var threadAborted = false;
+
+                // Loop until URL call finishes, or until timeoutSeconds elapses
+                while (processingThread.ThreadState != ThreadState.Stopped)
+                {
+                    ProgRunner.SleepMilliseconds(25);
+
+                    if (processingThread.ThreadState == ThreadState.Aborted)
+                    {
+                        threadAborted = true;
+                        break;
+                    }
+
+                    Application.DoEvents();
+                }
+
+                if (threadAborted)
+                {
+                    ShowErrorMessage("The processing thread was aborted");
+                    return false;
+                }
+
+                return mProcessingSuccess;
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage("Error in ProcessFileThreaded", ex);
+                return false;
+            }
+        }
+
+        private void ProcessFileWork()
+        {
+            mProcessingSuccess = false;
+            mProcessingSuccess = mProcessor.ProcessSingleFile(mInputFilePath, mOutputDirectoryPath);
+        }
+
     }
 }
