@@ -111,7 +111,7 @@ namespace FAIMS_MzXML_Generator
 
                 foreach (string item in filesToBeSplit)
                 {
-                    var success = processor.Process(item, txtOutputDirectory.Text);
+                    var success = processor.ProcessSingleFile(item, txtOutputDirectory.Text);
 
                     if (success)
                         successCount++;
