@@ -100,8 +100,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(TargetPath)" "$(ProjectDir)..\..\FAIMS MzXML Generator\FAIMS MzXML Generator\Rawfile To MzXML\" /Y /D
-xcopy "$(TargetDir)PRISM.dll" "$(ProjectDir)..\..\FAIMS MzXML Generator\FAIMS MzXML Generator\Rawfile To MzXML\" /Y /D</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
