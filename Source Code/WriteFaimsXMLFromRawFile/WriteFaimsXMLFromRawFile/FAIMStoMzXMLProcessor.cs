@@ -50,7 +50,7 @@ namespace WriteFaimsXMLFromRawFile
         {
             if (string.IsNullOrWhiteSpace(inputFilePathSpec))
             {
-                ConsoleMsgUtils.ShowWarning("Input file path sent to ProcessFiles is empty; unable to continue");
+                OnWarningEvent("Input file path sent to ProcessFiles is empty; unable to continue");
                 return false;
             }
 
@@ -72,7 +72,7 @@ namespace WriteFaimsXMLFromRawFile
             }
             catch (Exception ex)
             {
-                ConsoleMsgUtils.ShowError("Error in ProcessFiles", ex);
+                OnErrorEvent("Error in ProcessFiles", ex);
                 return false;
             }
         }
@@ -92,12 +92,12 @@ namespace WriteFaimsXMLFromRawFile
                 outputDirectory = new DirectoryInfo(outputDirectoryPath);
             }
 
-            Console.WriteLine("Input file path: {0}", inputFilePath);
-            Console.WriteLine("Output directory: {0}", outputDirectory.FullName);
+            OnStatusEvent(string.Format("Input file path: {0}", inputFilePath));
+            OnStatusEvent(string.Format("Output directory: {0}", outputDirectory.FullName));
 
             if (!outputDirectory.Exists)
             {
-                Console.WriteLine("Creating missing output directory");
+                OnStatusEvent("Creating missing output directory");
                 outputDirectory.Create();
             }
 
@@ -145,12 +145,12 @@ namespace WriteFaimsXMLFromRawFile
                 outputDirectory = new DirectoryInfo(outputDirectoryPath);
             }
 
-            Console.WriteLine("Input file spec: {0}", inputFilePathSpec);
-            Console.WriteLine("Output directory: {0}", outputDirectory.FullName);
+            OnStatusEvent(string.Format("Input file spec: {0}", inputFilePathSpec));
+            OnStatusEvent(string.Format("Output directory: {0}", outputDirectory.FullName));
 
             if (!outputDirectory.Exists)
             {
-                Console.WriteLine("Creating missing output directory");
+                OnStatusEvent("Creating missing output directory");
                 outputDirectory.Create();
             }
 
@@ -166,7 +166,7 @@ namespace WriteFaimsXMLFromRawFile
 
             if (matchCount == 0)
             {
-                ConsoleMsgUtils.ShowWarning("No match was found for the input file path spec:" + inputFilePathSpec);
+                OnWarningEvent("No match was found for the input file path spec:" + inputFilePathSpec);
                 return false;
             }
 
@@ -177,15 +177,13 @@ namespace WriteFaimsXMLFromRawFile
         {
             try
             {
-                Console.WriteLine("Processing {0}", filePath);
+                OnStatusEvent(string.Format("Processing {0}", filePath));
 
                 // quickly hash the raw file before opening it
                 var fileSha1 = HashRawFile(filePath);
 
                 // open up the raw file connection
                 var reader = new XRawFileIO(filePath);
-
-                ConsoleMsgUtils.ShowDebug("Reading CV values");
 
                 // get all unique CV values from scans
                 var cvValues = GetUniqueCvValues(reader);
@@ -207,7 +205,7 @@ namespace WriteFaimsXMLFromRawFile
 
                     var mzXmlPath = Path.Combine(outputDirectoryPath, baseName + "_" + cvValue + ".mzXML");
 
-                    ConsoleMsgUtils.ShowDebug("Creating file {0}", mzXmlPath);
+                    OnDebugEvent(string.Format("Creating file {0}", mzXmlPath));
 
                     var targetScans = FindAllTargetScans(cvValue, reader);
 
@@ -227,7 +225,7 @@ namespace WriteFaimsXMLFromRawFile
                             {
                                 var percentComplete = scansProcessed / (double)totalScanCount * 100;
 
-                                ConsoleMsgUtils.ShowDebugCustom(string.Format("... processing: {0:F0}% complete", percentComplete), emptyLinesBeforeMessage: 0);
+                                OnDebugEvent(string.Format("... processing: {0:F0}% complete", percentComplete));
                                 lastProgress = DateTime.UtcNow;
                             }
 
@@ -306,13 +304,13 @@ namespace WriteFaimsXMLFromRawFile
 
                 }
 
-                ConsoleMsgUtils.ShowDebugCustom(string.Format("... processing: {0:F0}% complete", 100), emptyLinesBeforeMessage: 0);
+                OnDebugEvent(string.Format("... processing: {0:F0}% complete", 100));
 
                 return true;
             }
             catch (Exception ex)
             {
-                ConsoleMsgUtils.ShowError("Error in ProcessFile", ex);
+                OnErrorEvent("Error in ProcessFile", ex);
                 return false;
             }
         }
@@ -331,13 +329,13 @@ namespace WriteFaimsXMLFromRawFile
 
             if (scanNumbers.Count < 10 || scanNumber % 100 == 0)
             {
-                ConsoleMsgUtils.ShowWarning(warningMessage);
+                OnWarningEvent(warningMessage);
             }
         }
 
         private string HashRawFile(string filePath)
         {
-            ConsoleMsgUtils.ShowDebug("Computing the SHA-1 Hash of the .raw file");
+            OnDebugEvent("Computing the SHA-1 Hash of the .raw file");
 
             var returnString = "";
             using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -352,7 +350,7 @@ namespace WriteFaimsXMLFromRawFile
                         formatted.AppendFormat("{0:X2}", b);
                     }
 
-                    ConsoleMsgUtils.ShowDebugCustom(string.Format("... {0}", formatted), emptyLinesBeforeMessage: 0);
+                    OnDebugEvent(string.Format("... {0}", formatted));
 
                     returnString += formatted.ToString().ToLower() + "\" />";
                 }
@@ -370,7 +368,7 @@ namespace WriteFaimsXMLFromRawFile
             {
                 if (showWarnings)
                 {
-                    ConsoleMsgUtils.ShowWarning("Scan {0} not found; skipping", scanNumber);
+                    OnWarningEvent(string.Format("Scan {0} not found; skipping", scanNumber));
                 }
                 return false;
             }
@@ -425,11 +423,25 @@ namespace WriteFaimsXMLFromRawFile
         private SortedSet<float> GetUniqueCvValues(XRawFileIO reader)
         {
 
+            OnDebugEvent("Determining FAIMS CV values");
+
+            var lastStatus = DateTime.UtcNow;
+            var progressShown = false;
+
             // Dictionary where keys are CV values and values are the filter text that scans with this CV value will have
             var cvValues = new SortedSet<float>();
 
             for (var scanNumber = reader.ScanStart; scanNumber <= reader.ScanEnd; scanNumber++)
             {
+                if (DateTime.UtcNow.Subtract(lastStatus).TotalSeconds >= 3)
+                {
+                    var percentComplete = scanNumber / (float)reader.ScanEnd * 100;
+                    OnDebugEvent(string.Format(" ... {0:F0}% of scans examined", percentComplete));
+
+                    lastStatus = DateTime.UtcNow;
+                    progressShown = true;
+                }
+
                 var success = GetCvValue(reader, scanNumber, out var cvValue, out _, true);
                 if (!success)
                     continue;
@@ -442,6 +454,10 @@ namespace WriteFaimsXMLFromRawFile
                 cvValues.Add(cvValue);
             }
 
+            if (progressShown)
+            {
+                OnDebugEvent(string.Format(" ... {0:F0}% of scans examined", 100));
+            }
             return cvValues;
         }
 
@@ -502,21 +518,21 @@ namespace WriteFaimsXMLFromRawFile
         {
             if (targetScans.Count == 0)
             {
-                ConsoleMsgUtils.ShowWarning("targetScans sent to WriteMsRunTag is empty; cannot create a valid .mzXML file");
+                OnWarningEvent("targetScans sent to WriteMsRunTag is empty; cannot create a valid .mzXML file");
                 return string.Empty;
             }
 
             var startScanFound = reader.GetScanInfo(targetScans.First(), out clsScanInfo scanFirst);
             if (!startScanFound)
             {
-                ConsoleMsgUtils.ShowWarning("Unable to find scan {0} in WriteMsRunTag", targetScans.First());
+                OnWarningEvent(string.Format("Unable to find scan {0} in WriteMsRunTag", targetScans.First()));
                 return string.Empty;
             }
 
             var endScanFound = reader.GetScanInfo(targetScans.Last(), out clsScanInfo scanLast);
             if (!endScanFound)
             {
-                ConsoleMsgUtils.ShowWarning("Unable to find scan {0} in WriteMsRunTag", targetScans.Last());
+                OnWarningEvent(string.Format("Unable to find scan {0} in WriteMsRunTag", targetScans.Last()));
                 return string.Empty;
             }
 
@@ -541,7 +557,7 @@ namespace WriteFaimsXMLFromRawFile
             var success = reader.GetScanInfo(startScan, out clsScanInfo scanInfo);
             if (!success)
             {
-                ConsoleMsgUtils.ShowWarning("Scan {0} not found in GetIonizationSource", startScan);
+                OnWarningEvent(string.Format("Scan {0} not found in GetIonizationSource", startScan));
                 return "Unknown";
             }
 
@@ -560,7 +576,7 @@ namespace WriteFaimsXMLFromRawFile
                 }
             }
 
-            ConsoleMsgUtils.ShowWarning("Unrecognized ionization source; filter line does not contain NSI or ESI: " + scanInfo.FilterText);
+            OnWarningEvent("Unrecognized ionization source; filter line does not contain NSI or ESI: " + scanInfo.FilterText);
             return "Unknown";
         }
 
@@ -571,7 +587,7 @@ namespace WriteFaimsXMLFromRawFile
             var success = reader.GetScanInfo(startScan, out clsScanInfo scanInfo);
             if (!success)
             {
-                ConsoleMsgUtils.ShowWarning("Scan {0} not found in GetIonizationSource", startScan);
+                OnWarningEvent(string.Format("Scan {0} not found in GetIonizationSource", startScan));
                 return "Unknown";
             }
 
@@ -590,7 +606,7 @@ namespace WriteFaimsXMLFromRawFile
                 }
             }
 
-            ConsoleMsgUtils.ShowWarning("Unrecognized MzAnalyzer; filter line does not contain FTMS or ITMS: " + scanInfo.FilterText);
+            OnWarningEvent("Unrecognized MzAnalyzer; filter line does not contain FTMS or ITMS: " + scanInfo.FilterText);
             return "Unknown";
         }
 
