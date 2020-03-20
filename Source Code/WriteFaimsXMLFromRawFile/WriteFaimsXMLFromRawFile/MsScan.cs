@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using CSMSL;
-using CSMSL.IO.Thermo;
-using CSMSL.Spectral;
+using System.IO;
+using System.Linq;
+using PRISM;
+using ThermoRawFileReader;
 
 namespace WriteFaimsXMLFromRawFile
 {
     class MsScan
     {
-        public int num;
+        public int ScanNumber;
         public int msLevel;
         public int peaksCount;
         public string polarity;
@@ -23,10 +24,10 @@ namespace WriteFaimsXMLFromRawFile
         public double totIonCurrent;
         public Peaks peaks;
 
-        public MsScan(int num, int msLevel, int peaksCount, string polarity, string scanType, string filterLine, string retentionTime, double lowMz, double highMz,
+        public MsScan(int scanNumber, int msLevel, int peaksCount, string polarity, string scanType, string filterLine, string retentionTime, double lowMz, double highMz,
             double basePeakMz, double basePeakIntensity, double totIonCurrent, Peaks peaks)
         {
-            this.num = num;
+            ScanNumber = scanNumber;
             this.msLevel = msLevel;
             this.peaksCount = peaksCount;
             this.polarity = polarity;
@@ -41,51 +42,89 @@ namespace WriteFaimsXMLFromRawFile
             this.peaks = peaks;
         }
 
-        public MsScan(int num, ThermoRawFile rawFile)
+        public MsScan(int scanNumber, XRawFileIO reader)
         {
-            this.num = num;
+            ScanNumber = scanNumber;
 
-            var scan = rawFile.GetMsScan(num);
-            var spectrum = scan.MassSpectrum;
-
-            this.msLevel = scan.MsnOrder;
-            this.peaksCount = scan.MassSpectrum.Count;
-
-            if (scan.Polarity.Equals(Polarity.Positive))
+            if (!reader.GetScanInfo(scanNumber, out clsScanInfo scanInfo))
             {
-                this.polarity = "+";
+                ConsoleMsgUtils.ShowWarning("Scan {0} not found in {1}", scanNumber, Path.GetFileName(reader.RawFilePath));
+                return;
             }
-            else
-            {
-                this.polarity = "-";
-            }
-            this.filterLine = rawFile.GetScanFilter(num);
-            this.scanType = GetScanType();
 
-            this.retentionTime = "PT" + Math.Round(rawFile.GetRetentionTime(num) * 60, 8) + "S";
-            this.totIonCurrent = spectrum.TotalIonCurrent;
+            // Get centroided data
+            var dataPointCount = GetScanData(reader, scanInfo, out var mzList, out var intensityList);
+
+            msLevel = scanInfo.MSLevel;
+            peaksCount = dataPointCount;
+
+            switch (scanInfo.IonMode)
+            {
+                case IonModeConstants.Positive:
+                    polarity = "+";
+                    break;
+
+                case IonModeConstants.Negative:
+                    polarity = "-";
+                    break;
+
+                case IonModeConstants.Unknown:
+                    polarity = string.Empty;
+                    break;
+            }
+
+            filterLine = scanInfo.FilterText;
+            scanType = GetScanType();
+
+            retentionTime = "PT" + Math.Round(scanInfo.RetentionTime * 60, 8) + "S";
+            totIonCurrent = scanInfo.TotalIonCurrent;
 
             string encodedPeaks;
             if (peaksCount == 0)
             {
-                this.lowMz = 0;
-                this.highMz = 0;
-                this.basePeakMz = 0;
-                this.basePeakIntensity = 0;
+                lowMz = 0;
+                highMz = 0;
+                basePeakMz = 0;
+                basePeakIntensity = 0;
 
-                encodedPeaks = Base64EncodeMsData(spectrum);
+                encodedPeaks = Base64EncodeMsData(mzList, intensityList);
             }
             else
             {
-                this.lowMz = spectrum.FirstMZ;
-                this.highMz = spectrum.LastMZ;
-                this.basePeakMz = spectrum.GetBasePeak().MZ;
-                this.basePeakIntensity = spectrum.GetBasePeakIntensity();
+                lowMz = mzList.Min();
+                highMz = mzList.Max();
+                basePeakMz = scanInfo.BasePeakMZ;
+                basePeakIntensity = scanInfo.BasePeakIntensity;
 
-                encodedPeaks = Base64EncodeMsData(spectrum);
+                encodedPeaks = Base64EncodeMsData(mzList, intensityList);
             }
 
-            this.peaks = new Peaks(32, "network", "m/z-int", "none", 0, encodedPeaks);
+            peaks = new Peaks(32, "network", "m/z-int", "none", 0, encodedPeaks);
+        }
+
+        private int GetScanData(XRawFileIO reader, clsScanInfo scanInfo, out double[] mzList, out double[] intensityList)
+        {
+            if (scanInfo.IsFTMS)
+            {
+                var labelDataCount = reader.GetScanLabelData(scanInfo.ScanNumber, out var labelData);
+
+                if (labelDataCount > 0)
+                {
+                    mzList = new double[labelDataCount];
+                    intensityList = new double[labelDataCount];
+
+                    for (var i = 0; i < labelDataCount; i++)
+                    {
+                        mzList[i] = labelData[i].Mass;
+                        intensityList[i] = labelData[i].Intensity;
+                    }
+
+                    return labelDataCount;
+                }
+            }
+
+            var dataPointCount = reader.GetScanData(scanInfo.ScanNumber, out mzList, out intensityList, 0, true);
+            return dataPointCount;
         }
 
         private string GetScanType()
@@ -110,23 +149,30 @@ namespace WriteFaimsXMLFromRawFile
             return returnString;
         }
 
-        private static string Base64EncodeMsData(ISpectrum spectrum)
+        [Obsolete("Unused")]
+        private static string Base64EncodeMsData(CSMSL.Spectral.ISpectrum spectrum)
+        {
+
+            var mzList = spectrum.GetMasses();
+            var intensityList = spectrum.GetIntensities();
+
+            return Base64EncodeMsData(mzList, intensityList);
+        }
+
+        private static string Base64EncodeMsData(IReadOnlyList<double> mzList, IReadOnlyList<double> intensityList)
         {
             var byteList = new List<byte>();
 
-            var mZs = spectrum.GetMasses();
-            var intensities = spectrum.GetIntensities();
-
-            for (var i = 0; i < mZs.Length; i++)
+            for (var i = 0; i < mzList.Count; i++)
             {
-                var floatValue = Convert.ToSingle(mZs[i]);
+                var floatValue = Convert.ToSingle(mzList[i]);
                 var bigEndianFloat = FloatToBigEndian(floatValue);
                 foreach (var chunk in bigEndianFloat)
                 {
                     byteList.Add(chunk);
                 }
 
-                floatValue = Convert.ToSingle(intensities[i]);
+                floatValue = Convert.ToSingle(intensityList[i]);
                 bigEndianFloat = FloatToBigEndian(floatValue);
                 foreach (var chunk in bigEndianFloat)
                 {
@@ -139,7 +185,7 @@ namespace WriteFaimsXMLFromRawFile
             return Convert.ToBase64String(byteArray);
         }
 
-        private static byte[] FloatToBigEndian(Single floatValue)
+        private static byte[] FloatToBigEndian(float floatValue)
         {
             var littleEndian = BitConverter.GetBytes(floatValue);
 

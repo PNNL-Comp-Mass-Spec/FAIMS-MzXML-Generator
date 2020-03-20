@@ -14,7 +14,7 @@ namespace WriteFaimsXMLFromRawFile
             double basePeakMz, double basePeakIntensity, double totIonCurrent, Peaks peaks) : base(num, msLevel, peaksCount, polarity, scanType, filterLine,
             retentionTime, lowMz, highMz, basePeakMz, basePeakIntensity, totIonCurrent, peaks)
         {
-            this.num = num;
+            ScanNumber = num;
             this.msLevel = msLevel;
             this.peaksCount = peaksCount;
             this.polarity = polarity;
@@ -32,7 +32,7 @@ namespace WriteFaimsXMLFromRawFile
         public static Ms1Scan Create(MsScan scan)
         {
             var ms1 = new Ms1Scan(
-                scan.num, scan.msLevel, scan.peaksCount,
+                scan.ScanNumber, scan.msLevel, scan.peaksCount,
                 scan.polarity, scan.scanType, scan.filterLine,
                 scan.retentionTime, scan.lowMz, scan.highMz,
                 scan.basePeakMz, scan.basePeakIntensity,
