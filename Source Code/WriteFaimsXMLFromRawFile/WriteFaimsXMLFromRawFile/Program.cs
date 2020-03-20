@@ -215,9 +215,6 @@ namespace WriteFaimsXMLFromRawFile
 
                 var lastProgress = DateTime.UtcNow;
 
-                // Change this to true to create a tab-delimited text listing the MS1 and MS2 scans in the .mzXML file
-                var createScanMapFile = false;
-
                 // now work for each unique CV value (# files we're going to need to split into)
                 // get all scans that have the CV that we're currently targeting
                 foreach (var cvValue in cvValues)
@@ -225,7 +222,6 @@ namespace WriteFaimsXMLFromRawFile
                     var baseName = Path.GetFileNameWithoutExtension(filePath);
 
                     var mzXmlPath = Path.Combine(outputDirectoryPath, baseName + "_" + cvValue + ".mzXML");
-                    var scanMapFilePath = Path.Combine(outputDirectoryPath, baseName + "_ScanMap_" + cvValue + ".txt");
 
                     ConsoleMsgUtils.ShowDebug("Creating file {0}", mzXmlPath);
 
@@ -327,7 +323,6 @@ namespace WriteFaimsXMLFromRawFile
                     // Reset static variables for next iteration
                     ByteVariables.byteDepth = 0;
                     ByteVariables.scanOffsets.Clear();
-
                 }
 
                 ConsoleMsgUtils.ShowDebugCustom(string.Format("... processing: {0:F0}% complete", 100), emptyLinesBeforeMessage: 0);
