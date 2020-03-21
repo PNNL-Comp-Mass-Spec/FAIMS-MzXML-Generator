@@ -179,7 +179,7 @@ namespace WriteFaimsXMLFromRawFile
             {
                 OnStatusEvent(string.Format("Processing {0}", filePath));
 
-                // quickly hash the raw file before opening it
+                // Compute the SHA-1 hash of the .Raw file
                 var fileSha1 = HashRawFile(filePath);
 
                 // Disable loading the method
@@ -189,10 +189,10 @@ namespace WriteFaimsXMLFromRawFile
                     LoadMSMethodInfo = false
                 };
 
-                // open up the raw file connection
+                // Open up the raw file connection
                 var reader = new XRawFileIO(filePath, readerOptions);
 
-                // get all unique CV values from scans
+                // Get all unique CV values from scans
                 var cvValues = GetUniqueCvValues(reader);
 
                 var totalScanCount = reader.GetNumScans();
@@ -200,7 +200,7 @@ namespace WriteFaimsXMLFromRawFile
 
                 var lastProgress = DateTime.UtcNow;
 
-                // now work for each unique CV value (# files we're going to need to split into)
+                // Now work for each unique CV value (# files we're going to need to split into)
                 // get all scans that have the CV that we're currently targeting
                 foreach (var cvValue in cvValues)
                 {
@@ -225,7 +225,7 @@ namespace WriteFaimsXMLFromRawFile
 
                         Ms1Scan currentMS1Scan = null;
 
-                        // write out our target scans
+                        // Write out our target scans
                         foreach (var scanNumber in targetScans)
                         {
                             if (DateTime.UtcNow.Subtract(lastProgress).TotalSeconds >= 3)
@@ -244,12 +244,12 @@ namespace WriteFaimsXMLFromRawFile
 
                                 if (currentMS1Scan == null)
                                 {
-                                    // start condition
+                                    // Start condition
                                     currentMS1Scan = Ms1Scan.Create(scan);
                                 }
                                 else
                                 {
-                                    // write currentMS1Scan to file
+                                    // Write currentMS1Scan to file
                                     var outString = currentMS1Scan.ToXML(this);
                                     writer.WriteLine(outString);
 
@@ -273,20 +273,20 @@ namespace WriteFaimsXMLFromRawFile
 
                         if (currentMS1Scan != null)
                         {
-                            // once we're out, we need to write out our last currentMS1Scan
+                            // Once we're out, we need to write out our last currentMS1Scan
                             writer.WriteLine(currentMS1Scan.ToXML(this));
                         }
 
-                        //finish off msRun
+                        // Finish off msRun
                         writer.WriteLine(" </msRun>");
 
                         writer.WriteLine(" <index name=\"scan\" >");
 
-                        // add special entry to our indexOffset list for where the offsets start
+                        // Add special entry to our indexOffset list for where the offsets start
                         var index = new Index(0, ByteTracking.ByteDepth + ByteTracking.Encoder.GetByteCount(" </msRun>") + 3);
                         ByteTracking.ScanOffsets.Add(index);
 
-                        // write all index offsets
+                        // Write all index offsets
                         for (var i = 0; i < ByteTracking.ScanOffsets.Count - 1; i++)
                         {
                             var offset = ByteTracking.ScanOffsets[i];
