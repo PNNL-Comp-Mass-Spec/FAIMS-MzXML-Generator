@@ -35,7 +35,7 @@ namespace WriteFaimsXMLFromRawFile
             stringBuilder.AppendLine(offset + " byteOrder=\"" + byteOrder + "\"");
             stringBuilder.AppendLine(offset + " contentType=\"" + contentType + "\"");
             stringBuilder.AppendLine(offset + " compressionType=\"" + compressionType + "\"");
-            stringBuilder.Append(offset + " compressedLen=\"" + compressedLen + "\"" + " >" + encodedData + "</peaks>");
+            stringBuilder.Append(offset + " compressedLen=\"" + compressedLen + "\"" + ">" + encodedData + "</peaks>");
 
             return stringBuilder.ToString();
         }

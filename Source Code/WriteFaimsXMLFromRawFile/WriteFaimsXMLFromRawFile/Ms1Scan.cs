@@ -73,7 +73,7 @@ namespace WriteFaimsXMLFromRawFile
             sb.AppendLine("   highMz=\"" + Math.Round(this.highMz, 3) + "\"");
             sb.AppendLine("   basePeakMz=\"" + Math.Round(this.basePeakMz, 3) + "\"");
             sb.AppendLine("   basePeakIntensity=\"" + this.FormatSpecialNumber(this.basePeakIntensity) + "\"");
-            sb.AppendLine("   totIonCurrent=\"" + this.FormatSpecialNumber(this.totIonCurrent) + "\" >");
+            sb.AppendLine("   totIonCurrent=\"" + this.FormatSpecialNumber(this.totIonCurrent) + "\">");
             sb.AppendLine(this.peaks.ToXML(3));
 
             // advance the byteTracker for Ms2 Indices

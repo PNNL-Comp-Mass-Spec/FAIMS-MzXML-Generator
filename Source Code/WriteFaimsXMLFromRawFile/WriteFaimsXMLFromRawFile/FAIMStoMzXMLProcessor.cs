@@ -280,7 +280,7 @@ namespace WriteFaimsXMLFromRawFile
                         // Finish off msRun
                         writer.WriteLine(" </msRun>");
 
-                        writer.WriteLine(" <index name=\"scan\" >");
+                        writer.WriteLine(" <index name=\"scan\">");
 
                         // Add special entry to our indexOffset list for where the offsets start
                         var index = new Index(0, ByteTracking.ByteDepth + ByteTracking.Encoder.GetByteCount(" </msRun>") + 3);
@@ -290,7 +290,7 @@ namespace WriteFaimsXMLFromRawFile
                         for (var i = 0; i < ByteTracking.ScanOffsets.Count - 1; i++)
                         {
                             var offset = ByteTracking.ScanOffsets[i];
-                            writer.WriteLine("  <offset id=\"" + offset.ScanNumber + "\" >" + offset.ByteDepth + "</offset>");
+                            writer.WriteLine("  <offset id=\"" + offset.ScanNumber + "\">" + offset.ByteDepth + "</offset>");
                         }
 
                         writer.WriteLine(" </index>");
@@ -499,7 +499,7 @@ namespace WriteFaimsXMLFromRawFile
             sb.AppendLine("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
             sb.AppendLine("<mzXML xmlns=\"http://sashimi.sourceforge.net/schema_revision/mzXML_3.1\"");
             sb.AppendLine(" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
-            sb.AppendLine(" xsi:schemaLocation=\"http://sashimi.sourceforge.net/schema_revision/mzXML_3.1 http://sashimi.sourceforge.net/schema_revision/mzXML_3.1/mzXML_idx_3.1.xsd\" >");
+            sb.AppendLine(" xsi:schemaLocation=\"http://sashimi.sourceforge.net/schema_revision/mzXML_3.1 http://sashimi.sourceforge.net/schema_revision/mzXML_3.1/mzXML_idx_3.1.xsd\">");
             sb.AppendLine(WriteMsRunTag(reader, targetScans));
             sb.AppendLine(WriteParentFileTag(filePath, hash));
             sb.AppendLine("  <msInstrument>");
@@ -510,7 +510,7 @@ namespace WriteFaimsXMLFromRawFile
             sb.AppendLine("   <msDetector category=\"msDetector\" value=\"unknown\" />");
             sb.AppendLine("   <software type=\"acquisition\" name=\"Xcalibur\" version=\"3.1.2279\" />");
             sb.AppendLine("  </msInstrument>");
-            sb.AppendLine("  <dataProcessing centroided=\"1\" >");
+            sb.AppendLine("  <dataProcessing centroided=\"1\">");
             sb.AppendLine(string.Format(
                 "   <software type=\"conversion\" name=\"WriteFaimsXMLFromRawFile\" version=\"{0}\" />", version));
             sb.Append("  </dataProcessing>");
@@ -545,7 +545,7 @@ namespace WriteFaimsXMLFromRawFile
 
             var returnString = " <msRun scanCount=\"" + targetScans.Count + "\" startTime=\"";
             var startTime = "PT" + Math.Round(scanFirst.RetentionTime * 60, 8) + "S\" ";
-            var endTime = "endTime=\"PT" + Math.Round(scanLast.RetentionTime * 60, 8) + "S\" >";
+            var endTime = "endTime=\"PT" + Math.Round(scanLast.RetentionTime * 60, 8) + "S\">";
 
             return returnString + startTime + endTime;
         }

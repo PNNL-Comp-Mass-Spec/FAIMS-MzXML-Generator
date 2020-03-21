@@ -161,7 +161,7 @@ namespace WriteFaimsXMLFromRawFile
             sb.AppendLine("    basePeakMz=\"" + Math.Round(this.basePeakMz, 3) + "\"");
             sb.AppendLine("    basePeakIntensity=\"" + this.FormatSpecialNumber(this.basePeakIntensity) + "\"");
             sb.AppendLine("    totIonCurrent=\"" + this.FormatSpecialNumber(this.totIonCurrent) + "\"");
-            sb.AppendLine("    collisionEnergy=\"" + this.collisionEnergy + "\" >");
+            sb.AppendLine("    collisionEnergy=\"" + this.collisionEnergy + "\">");
 
             sb.AppendLine(this.precursorMz.ToXML());
             sb.AppendLine(this.peaks.ToXML(4));
