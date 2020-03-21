@@ -30,7 +30,7 @@ namespace WriteFaimsXMLFromRawFile
         public void Reset()
         {
            ByteDepth = 0;
-           //ScanOffsets.Clear();
+           ScanOffsets.Clear();
            CurrentScan = 1;
         }
 }
