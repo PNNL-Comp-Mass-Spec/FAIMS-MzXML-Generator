@@ -149,16 +149,6 @@ namespace WriteFaimsXMLFromRawFile
             return returnString;
         }
 
-        [Obsolete("Unused")]
-        private static string Base64EncodeMsData(CSMSL.Spectral.ISpectrum spectrum)
-        {
-
-            var mzList = spectrum.GetMasses();
-            var intensityList = spectrum.GetIntensities();
-
-            return Base64EncodeMsData(mzList, intensityList);
-        }
-
         private static string Base64EncodeMsData(IReadOnlyList<double> mzList, IReadOnlyList<double> intensityList)
         {
             var byteList = new List<byte>();
