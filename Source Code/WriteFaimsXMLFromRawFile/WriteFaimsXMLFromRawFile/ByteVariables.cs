@@ -24,14 +24,22 @@ namespace WriteFaimsXMLFromRawFile
         {
             Encoder = encoder;
             ScanOffsets = new List<Index>();
-            Reset();
+            Reset(true);
         }
 
-        public void Reset()
+        /// <summary>
+        /// Reset the tracking variables
+        /// </summary>
+        /// <param name="restartScanNumbering">When true, reset the CurrentScan to 1; only do this when processing a new .raw file</param>
+        public void Reset(bool restartScanNumbering)
         {
            ByteDepth = 0;
            ScanOffsets.Clear();
-           CurrentScan = 1;
+
+           if (restartScanNumbering)
+           {
+               CurrentScan = 1;
+           }
         }
 }
 }

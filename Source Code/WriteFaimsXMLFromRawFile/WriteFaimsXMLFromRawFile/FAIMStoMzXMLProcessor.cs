@@ -200,14 +200,13 @@ namespace WriteFaimsXMLFromRawFile
 
                 var lastProgress = DateTime.UtcNow;
 
+                // Reset tracking variables
+                ByteTracking.Reset(true);
+
                 // Now work for each unique CV value (# files we're going to need to split into)
                 // get all scans that have the CV that we're currently targeting
                 foreach (var cvValue in cvValues)
                 {
-
-                    // Reset variables for next iteration
-                    ByteTracking.Reset();
-
                     var baseName = Path.GetFileNameWithoutExtension(filePath);
 
                     var mzXmlPath = Path.Combine(outputDirectoryPath, baseName + "_" + cvValue + ".mzXML");
@@ -309,6 +308,8 @@ namespace WriteFaimsXMLFromRawFile
                         writer.WriteLine("</mzXML>");
                     }
 
+                    // Reset tracking variables, but do not restart scan numbering
+                    ByteTracking.Reset(false);
                 }
 
                 OnDebugEvent(string.Format("... processing: {0:F0}% complete", 100));
