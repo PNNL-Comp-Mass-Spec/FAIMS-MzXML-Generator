@@ -8,7 +8,7 @@ the .raw file.
 
 ### Background
 
-MaxQuant currently does not process FAIMS data correctly if multiple correction voltages are used through the experiment's duration. The FAIMS MzXML Generator was developed as a workaround to this issue by splitting a FAIMS Raw file into a set of MaxQuant compliant .mzXML files, each containing only scans collected using a single correction voltage. These resulting .mzXML files can then be processed via MaxQuant as usual.
+MaxQuant currently does not process FAIMS data correctly if multiple compensation voltages are used through the experiment's duration. The FAIMS MzXML Generator was developed as a workaround to this issue by splitting a FAIMS Raw file into a set of MaxQuant compliant .mzXML files, each containing only scans collected using a single compensation voltage. These resulting .mzXML files can then be processed via MaxQuant as usual.
 
 ## Getting Started
 
