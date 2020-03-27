@@ -8,7 +8,7 @@ namespace WriteFaimsXMLFromRawFile
 {
     class Program
     {
-        private const string PROGRAM_DATE = "2020-03-23";
+        private const string PROGRAM_DATE = "2020-03-26";
 
         static void Main(string[] args)
         {

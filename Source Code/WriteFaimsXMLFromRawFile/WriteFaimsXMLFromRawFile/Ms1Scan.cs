@@ -79,6 +79,8 @@ namespace WriteFaimsXMLFromRawFile
             // advance the byteTracker for Ms2 Indices
             processor.ByteTracker(sb.ToString(), true);
 
+            processor.ByteTracking.CurrentScan++;
+
             foreach (var ms2 in ms2s)
             {
                 var ms2String = ms2.ToXML(processor);
@@ -90,8 +92,6 @@ namespace WriteFaimsXMLFromRawFile
 
             sb.Append("  </scan>");
             processor.ByteTracker("  </scan>");
-
-            processor.ByteTracking.CurrentScan++;
 
             return sb.ToString();
         }
