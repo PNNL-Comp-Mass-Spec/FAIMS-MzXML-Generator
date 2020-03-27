@@ -32,6 +32,12 @@ namespace WriteFaimsXMLFromRawFile
         public ByteVariables ByteTracking { get; }
 
         /// <summary>
+        /// Set this to True to assume that all of the CV values have been found once
+        /// each CV value has been found 50 times
+        /// </summary>
+        public bool QuickCVLookup { get; set; }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         // ReSharper disable once IdentifierTypo
@@ -439,6 +445,10 @@ namespace WriteFaimsXMLFromRawFile
             // Dictionary where keys are CV values and values are the filter text that scans with this CV value will have
             var cvValues = new SortedSet<float>();
 
+            // Dictionary where keys are CV values and values are the number of scans with this value
+            // This is used when Options.Preview is true
+            var cvValueStats = new Dictionary<float, int>();
+
             for (var scanNumber = reader.ScanStart; scanNumber <= reader.ScanEnd; scanNumber++)
             {
                 if (DateTime.UtcNow.Subtract(lastStatus).TotalSeconds >= 3)
@@ -456,10 +466,26 @@ namespace WriteFaimsXMLFromRawFile
 
                 if (cvValues.Contains(cvValue))
                 {
+                    var scanCount = cvValueStats[cvValue];
+                    cvValueStats[cvValue] = scanCount + 1;
+                    if (QuickCVLookup && scanCount > 50)
+                    {
+                        // If all of the CV values have been found 50+ times, assume that we have found all of the CV values
+                        // (since typically machines cycle through a CV list)
+
+                        var minObservedCount = (from item in cvValueStats select item.Value).Min();
+                        if (minObservedCount > 50)
+                        {
+                            // Ignore the remaining scans
+                            break;
+                        }
+                    }
+
                     continue;
                 }
 
                 cvValues.Add(cvValue);
+                cvValueStats.Add(cvValue, 1);
             }
 
             if (progressShown)

@@ -56,6 +56,8 @@ namespace WriteFaimsXMLFromRawFile
                 var processor = new FAIMStoMzXMLProcessor();
                 RegisterEvents(processor);
 
+                processor.QuickCVLookup = false;
+
                 var success = processor.ProcessFiles(inputFilePathSpec, outputDirectoryPath);
 
                 if (success)
