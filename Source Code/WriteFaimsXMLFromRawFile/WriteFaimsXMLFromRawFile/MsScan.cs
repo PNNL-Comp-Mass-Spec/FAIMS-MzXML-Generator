@@ -10,36 +10,36 @@ namespace WriteFaimsXMLFromRawFile
 {
     internal class MsScan
     {
-        public int ScanNumber;
-        public int msLevel;
-        public int peaksCount;
-        public string polarity;
-        public string scanType;
-        public string filterLine;
-        public string retentionTime;
-        public double lowMz;
-        public double highMz;
-        public double basePeakMz;
-        public double basePeakIntensity;
-        public double totIonCurrent;
-        public Peaks peaks;
+        public int ScanNumber { get; set; }
+        public int MsLevel { get; set; }
+        public int PeaksCount { get; set; }
+        public string Polarity { get; set; }
+        public string ScanType { get; set; }
+        public string FilterLine { get; set; }
+        public string RetentionTime { get; set; }
+        public double LowMz { get; set; }
+        public double HighMz { get; set; }
+        public double BasePeakMz { get; set; }
+        public double BasePeakIntensity { get; set; }
+        public double TotIonCurrent { get; set; }
+        public Peaks PeakData { get; set; }
 
         public MsScan(int scanNumber, int msLevel, int peaksCount, string polarity, string scanType, string filterLine, string retentionTime, double lowMz, double highMz,
-            double basePeakMz, double basePeakIntensity, double totIonCurrent, Peaks peaks)
+            double basePeakMz, double basePeakIntensity, double totIonCurrent, Peaks peakData)
         {
             ScanNumber = scanNumber;
-            this.msLevel = msLevel;
-            this.peaksCount = peaksCount;
-            this.polarity = polarity;
-            this.scanType = scanType;
-            this.filterLine = filterLine;
-            this.retentionTime = retentionTime;
-            this.lowMz = lowMz;
-            this.highMz = highMz;
-            this.basePeakMz = basePeakMz;
-            this.basePeakIntensity = basePeakIntensity;
-            this.totIonCurrent = totIonCurrent;
-            this.peaks = peaks;
+            MsLevel = msLevel;
+            PeaksCount = peaksCount;
+            Polarity = polarity;
+            ScanType = scanType;
+            FilterLine = filterLine;
+            RetentionTime = retentionTime;
+            LowMz = lowMz;
+            HighMz = highMz;
+            BasePeakMz = basePeakMz;
+            BasePeakIntensity = basePeakIntensity;
+            TotIonCurrent = totIonCurrent;
+            PeakData = peakData;
         }
 
         public MsScan(int scanNumber, XRawFileIO reader)
@@ -55,51 +55,51 @@ namespace WriteFaimsXMLFromRawFile
             // Get centroided data
             var dataPointCount = GetScanData(reader, scanInfo, out var mzList, out var intensityList);
 
-            msLevel = scanInfo.MSLevel;
-            peaksCount = dataPointCount;
+            MsLevel = scanInfo.MSLevel;
+            PeaksCount = dataPointCount;
 
             switch (scanInfo.IonMode)
             {
                 case IonModeConstants.Positive:
-                    polarity = "+";
+                    Polarity = "+";
                     break;
 
                 case IonModeConstants.Negative:
-                    polarity = "-";
+                    Polarity = "-";
                     break;
 
                 case IonModeConstants.Unknown:
-                    polarity = string.Empty;
+                    Polarity = string.Empty;
                     break;
             }
 
-            filterLine = scanInfo.FilterText;
-            scanType = GetScanType();
+            FilterLine = scanInfo.FilterText;
+            ScanType = GetScanType();
 
-            retentionTime = "PT" + Math.Round(scanInfo.RetentionTime * 60, 8) + "S";
-            totIonCurrent = scanInfo.TotalIonCurrent;
+            RetentionTime = "PT" + Math.Round(scanInfo.RetentionTime * 60, 8) + "S";
+            TotIonCurrent = scanInfo.TotalIonCurrent;
 
             string encodedPeaks;
-            if (peaksCount == 0)
+            if (PeaksCount == 0)
             {
-                lowMz = 0;
-                highMz = 0;
-                basePeakMz = 0;
-                basePeakIntensity = 0;
+                LowMz = 0;
+                HighMz = 0;
+                BasePeakMz = 0;
+                BasePeakIntensity = 0;
 
                 encodedPeaks = Base64EncodeMsData(mzList, intensityList);
             }
             else
             {
-                lowMz = mzList.Min();
-                highMz = mzList.Max();
-                basePeakMz = scanInfo.BasePeakMZ;
-                basePeakIntensity = scanInfo.BasePeakIntensity;
+                LowMz = mzList.Min();
+                HighMz = mzList.Max();
+                BasePeakMz = scanInfo.BasePeakMZ;
+                BasePeakIntensity = scanInfo.BasePeakIntensity;
 
                 encodedPeaks = Base64EncodeMsData(mzList, intensityList);
             }
 
-            peaks = new Peaks(32, "network", "m/z-int", "none", 0, encodedPeaks);
+            PeakData = new Peaks(32, "network", "m/z-int", "none", 0, encodedPeaks);
         }
 
         private int GetScanData(XRawFileIO reader, clsScanInfo scanInfo, out double[] mzList, out double[] intensityList)

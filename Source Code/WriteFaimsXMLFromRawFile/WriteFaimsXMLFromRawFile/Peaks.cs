@@ -4,21 +4,21 @@ namespace WriteFaimsXMLFromRawFile
 {
     internal class Peaks
     {
-        public int precision;
-        public string byteOrder;
-        public string contentType;
-        public string compressionType;
-        public int compressedLen;
-        public string encodedData;
+        public int Precision { get; set; }
+        public string ByteOrder { get; set; }
+        public string ContentType { get; set; }
+        public string CompressionType { get; set; }
+        public int CompressedLen { get; set; }
+        public string EncodedData { get; set; }
 
         public Peaks(int precision, string byteOrder, string contentType, string compressionType, int compressedLen, string encodedData)
         {
-            this.precision = precision;
-            this.byteOrder = byteOrder;
-            this.contentType = contentType;
-            this.compressionType = compressionType;
-            this.compressedLen = compressedLen;
-            this.encodedData = encodedData;
+            Precision = precision;
+            ByteOrder = byteOrder;
+            ContentType = contentType;
+            CompressionType = compressionType;
+            CompressedLen = compressedLen;
+            EncodedData = encodedData;
         }
 
         public string ToXML(int spaceOffset)

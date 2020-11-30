@@ -243,7 +243,7 @@ namespace WriteFaimsXMLFromRawFile
 
                             var scan = new MsScan(scanNumber, reader);
 
-                            if (scan.msLevel == 1)
+                            if (scan.MsLevel == 1)
                             {
                                 parentScanToMS2Map.Add(scan.ScanNumber, new List<int>());
 
@@ -261,7 +261,7 @@ namespace WriteFaimsXMLFromRawFile
                                     currentMS1Scan = Ms1Scan.Create(scan);
                                 }
                             }
-                            else if (scan.msLevel == 2)
+                            else if (scan.MsLevel == 2)
                             {
                                 if (currentMS1Scan != null)
                                 {

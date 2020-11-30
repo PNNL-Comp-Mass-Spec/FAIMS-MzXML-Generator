@@ -14,31 +14,33 @@ namespace WriteFaimsXMLFromRawFile
     {
         // Ignore Spelling: cv
 
+        public int CollisionEnergy { get; set; }
+        public PrecursorMz PrecursorMz { get; set; }
 
         private Ms2Scan(int num, int msLevel, int peaksCount, string polarity, string scanType, string filterLine, string retentionTime, double lowMz, double highMz,
-            double basePeakMz, double basePeakIntensity, double totIonCurrent, Peaks peaks) : base(num, msLevel, peaksCount, polarity, scanType, filterLine,
-            retentionTime, lowMz, highMz, basePeakMz, basePeakIntensity, totIonCurrent, peaks)
+            double basePeakMz, double basePeakIntensity, double totIonCurrent, Peaks peakData) : base(num, msLevel, peaksCount, polarity, scanType, filterLine,
+            retentionTime, lowMz, highMz, basePeakMz, basePeakIntensity, totIonCurrent, peakData)
         {
-            this.ScanNumber = num;
-            this.msLevel = msLevel;
-            this.peaksCount = peaksCount;
-            this.polarity = polarity;
-            this.scanType = scanType;
-            this.filterLine = filterLine;
-            this.retentionTime = retentionTime;
-            this.lowMz = lowMz;
-            this.highMz = highMz;
-            this.basePeakMz = basePeakMz;
-            this.basePeakIntensity = basePeakIntensity;
-            this.totIonCurrent = totIonCurrent;
-            this.peaks = peaks;
+            ScanNumber = num;
+            MsLevel = msLevel;
+            PeaksCount = peaksCount;
+            Polarity = polarity;
+            ScanType = scanType;
+            FilterLine = filterLine;
+            RetentionTime = retentionTime;
+            LowMz = lowMz;
+            HighMz = highMz;
+            BasePeakMz = basePeakMz;
+            BasePeakIntensity = basePeakIntensity;
+            TotIonCurrent = totIonCurrent;
+            PeakData = peakData;
         }
 
         public static Ms2Scan Create(MsScan scan)
         {
             var ms2 = new Ms2Scan(
-                scan.ScanNumber, scan.msLevel, scan.peaksCount, scan.polarity, scan.scanType, scan.filterLine, scan.retentionTime, scan.lowMz,
-                scan.highMz, scan.basePeakMz, scan.basePeakIntensity, scan.totIonCurrent, scan.peaks);
+                scan.ScanNumber, scan.MsLevel, scan.PeaksCount, scan.Polarity, scan.ScanType, scan.FilterLine, scan.RetentionTime, scan.LowMz,
+                scan.HighMz, scan.BasePeakMz, scan.BasePeakIntensity, scan.TotIonCurrent, scan.PeakData);
             return ms2;
         }
 
@@ -48,7 +50,7 @@ namespace WriteFaimsXMLFromRawFile
             var success = reader.GetScanInfo(ScanNumber, out var scanInfo);
             if (!success)
             {
-                ConsoleMsgUtils.ShowWarning("Scan {0} not found by AddMs2ScanParameters", this.ScanNumber);
+                ConsoleMsgUtils.ShowWarning("Scan {0} not found by AddMs2ScanParameters", ScanNumber);
                 return;
             }
 
@@ -82,7 +84,7 @@ namespace WriteFaimsXMLFromRawFile
                 }
             }
 
-            var filterLineParts = this.filterLine.Split(' ');
+            var filterLineParts = FilterLine.Split(' ');
 
             string activationType;
             switch (scanInfo.ActivationType)
@@ -115,11 +117,11 @@ namespace WriteFaimsXMLFromRawFile
                     // RegEx alpha from numeric
                     var activationArray = Regex.Matches(param.Split('@')[1].Trim(), @"\D+|\d+").Cast<Match>().Select(m => m.Value).ToArray();
 
-                    this.collisionEnergy = Convert.ToInt32(double.Parse(activationArray[1]));
+                    CollisionEnergy = Convert.ToInt32(double.Parse(activationArray[1]));
                 }
             }
 
-            this.precursorMz = new PrecursorMz(precursorIntensity, activationType, precursorMzValue);
+            PrecursorMz = new PrecursorMz(precursorIntensity, activationType, precursorMzValue);
         }
 
         private clsScanInfo GetParentScan(XRawFileIO reader, clsScanInfo scanInfo)
@@ -147,7 +149,7 @@ namespace WriteFaimsXMLFromRawFile
             var index = new Index(processor.ByteTracking.CurrentScan, processor.ByteTracking.ByteDepth + 3);
             processor.ByteTracking.ScanOffsets.Add(index);
 
-            this.filterLine = FixFilterLine();
+            FilterLine = FixFilterLine();
 
             var sb = new StringBuilder();
 
@@ -165,8 +167,8 @@ namespace WriteFaimsXMLFromRawFile
             sb.AppendLine("    totIonCurrent=\"" + this.FormatSpecialNumber(this.totIonCurrent) + "\"");
             sb.AppendLine("    collisionEnergy=\"" + this.collisionEnergy + "\">");
 
-            sb.AppendLine(this.precursorMz.ToXML());
-            sb.AppendLine(this.peaks.ToXML(4));
+            sb.AppendLine(PrecursorMz.ToXML());
+            sb.AppendLine(PeakData.ToXML(4));
             sb.Append("   </scan>");
 
             processor.ByteTracking.CurrentScan++;
@@ -175,8 +177,8 @@ namespace WriteFaimsXMLFromRawFile
 
         private string FixFilterLine()
         {
-            // split filterLine by spaces. remove empty entries
-            var filterLineParts = this.filterLine.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            // split FilterLine by spaces. remove empty entries
+            var filterLineParts = this.FilterLine.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
             for (var i = 0; i < filterLineParts.Count; i++)
             {

@@ -15,35 +15,35 @@ namespace WriteFaimsXMLFromRawFile
         public List<Ms2Scan> Ms2s { get; set; }
 
         private Ms1Scan(int num, int msLevel, int peaksCount, string polarity, string scanType, string filterLine, string retentionTime, double lowMz, double highMz,
-            double basePeakMz, double basePeakIntensity, double totIonCurrent, Peaks peaks) : base(num, msLevel, peaksCount, polarity, scanType, filterLine,
-            retentionTime, lowMz, highMz, basePeakMz, basePeakIntensity, totIonCurrent, peaks)
+            double basePeakMz, double basePeakIntensity, double totIonCurrent, Peaks peakData) : base(num, msLevel, peaksCount, polarity, scanType, filterLine,
+            retentionTime, lowMz, highMz, basePeakMz, basePeakIntensity, totIonCurrent, peakData)
         {
             ScanNumber = num;
-            this.msLevel = msLevel;
-            this.peaksCount = peaksCount;
-            this.polarity = polarity;
-            this.scanType = scanType;
-            this.filterLine = filterLine;
-            this.retentionTime = retentionTime;
-            this.lowMz = lowMz;
-            this.highMz = highMz;
-            this.basePeakMz = basePeakMz;
-            this.basePeakIntensity = basePeakIntensity;
-            this.totIonCurrent = totIonCurrent;
-            this.peaks = peaks;
+            MsLevel = msLevel;
+            PeaksCount = peaksCount;
+            Polarity = polarity;
+            ScanType = scanType;
+            FilterLine = filterLine;
+            RetentionTime = retentionTime;
+            LowMz = lowMz;
+            HighMz = highMz;
+            BasePeakMz = basePeakMz;
+            BasePeakIntensity = basePeakIntensity;
+            TotIonCurrent = totIonCurrent;
+            PeakData = peakData;
         }
 
         public static Ms1Scan Create(MsScan scan)
         {
             var ms1 = new Ms1Scan(
-                scan.ScanNumber, scan.msLevel, scan.peaksCount,
-                scan.polarity, scan.scanType, scan.filterLine,
-                scan.retentionTime, scan.lowMz, scan.highMz,
-                scan.basePeakMz, scan.basePeakIntensity,
-                scan.totIonCurrent, scan.peaks)
+                scan.ScanNumber, scan.MsLevel, scan.PeaksCount,
+                scan.Polarity, scan.ScanType, scan.FilterLine,
+                scan.RetentionTime, scan.LowMz, scan.HighMz,
+                scan.BasePeakMz, scan.BasePeakIntensity,
+                scan.TotIonCurrent, scan.PeakData)
             {
                 // Initialize list to hold references to Ms2Scans
-                ms2s = new List<Ms2Scan>()
+                Ms2s = new List<Ms2Scan>()
             };
 
             return ms1;
@@ -51,7 +51,7 @@ namespace WriteFaimsXMLFromRawFile
 
         public void AddMs2Scan(Ms2Scan scan)
         {
-            this.ms2s.Add(scan);
+            Ms2s.Add(scan);
         }
 
         // for outputting valid MzXML strings to file
@@ -61,31 +61,31 @@ namespace WriteFaimsXMLFromRawFile
             var index = new Index(processor.ByteTracking.CurrentScan, processor.ByteTracking.ByteDepth + 2);
             processor.ByteTracking.ScanOffsets.Add(index);
 
-            this.filterLine = FixFilterLine();
+            FilterLine = FixFilterLine();
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("  <scan num=\"" + processor.ByteTracking.CurrentScan + "\"");
+            sb.AppendFormat("  <scan num=\"{0}\"", processor.ByteTracking.CurrentScan).AppendLine();
 
-            sb.AppendLine("   msLevel=\"" + this.msLevel + "\"");
-            sb.AppendLine("   peaksCount=\"" + this.peaksCount + "\"");
-            sb.AppendLine("   polarity=\"" + this.polarity + "\"");
-            sb.AppendLine("   scanType=\"" + this.scanType + "\"");
-            sb.AppendLine("   filterLine=\"" + this.filterLine + "\"");
-            sb.AppendLine("   retentionTime=\"" + this.retentionTime + "\"");
-            sb.AppendLine("   lowMz=\"" + Math.Round(this.lowMz, 3) + "\"");
-            sb.AppendLine("   highMz=\"" + Math.Round(this.highMz, 3) + "\"");
-            sb.AppendLine("   basePeakMz=\"" + Math.Round(this.basePeakMz, 3) + "\"");
-            sb.AppendLine("   basePeakIntensity=\"" + this.FormatSpecialNumber(this.basePeakIntensity) + "\"");
-            sb.AppendLine("   totIonCurrent=\"" + this.FormatSpecialNumber(this.totIonCurrent) + "\">");
-            sb.AppendLine(this.peaks.ToXML(3));
+            sb.AppendFormat("   msLevel=\"{0}\"", MsLevel).AppendLine();
+            sb.AppendFormat("   peaksCount=\"{0}\"", PeaksCount).AppendLine();
+            sb.AppendFormat("   polarity=\"{0}\"", Polarity).AppendLine();
+            sb.AppendFormat("   scanType=\"{0}\"", ScanType).AppendLine();
+            sb.AppendFormat("   filterLine=\"{0}\"", FilterLine).AppendLine();
+            sb.AppendFormat("   retentionTime=\"{0}\"", RetentionTime).AppendLine();
+            sb.AppendFormat("   lowMz=\"" + Math.Round(LowMz, 3) + "\"").AppendLine();
+            sb.AppendFormat("   highMz=\"" + Math.Round(HighMz, 3) + "\"").AppendLine();
+            sb.AppendFormat("   basePeakMz=\"" + Math.Round(BasePeakMz, 3) + "\"").AppendLine();
+            sb.AppendFormat("   basePeakIntensity=\"" + FormatSpecialNumber(BasePeakIntensity) + "\"").AppendLine();
+            sb.AppendFormat("   totIonCurrent=\"" + FormatSpecialNumber(TotIonCurrent) + "\">").AppendLine();
+            sb.AppendLine(PeakData.ToXML(3));
 
             // advance the byteTracker for Ms2 Indices
             processor.ByteTracker(sb.ToString(), true);
 
             processor.ByteTracking.CurrentScan++;
 
-            foreach (var ms2 in ms2s)
+            foreach (var ms2 in Ms2s)
             {
                 var ms2String = ms2.ToXML(processor);
                 sb.AppendLine(ms2String);
@@ -102,8 +102,8 @@ namespace WriteFaimsXMLFromRawFile
 
         private string FixFilterLine()
         {
-            // split filterLine by spaces. remove empty entries
-            var filterLineParts = filterLine.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            // split FilterLine by spaces. remove empty entries
+            var filterLineParts = FilterLine.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
             for (var i = 0; i < filterLineParts.Count; i++)
             {
