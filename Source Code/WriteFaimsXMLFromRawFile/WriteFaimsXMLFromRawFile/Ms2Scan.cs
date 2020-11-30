@@ -12,6 +12,8 @@ namespace WriteFaimsXMLFromRawFile
         // Ms2 specific vars
         public int collisionEnergy;
         public PrecursorMz precursorMz;
+        // Ignore Spelling: cv
+
 
         private Ms2Scan(int num, int msLevel, int peaksCount, string polarity, string scanType, string filterLine, string retentionTime, double lowMz, double highMz,
             double basePeakMz, double basePeakIntensity, double totIonCurrent, Peaks peaks) : base(num, msLevel, peaksCount, polarity, scanType, filterLine,

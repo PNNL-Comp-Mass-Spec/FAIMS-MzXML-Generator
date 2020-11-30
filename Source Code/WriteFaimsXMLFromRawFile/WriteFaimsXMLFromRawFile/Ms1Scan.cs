@@ -9,6 +9,7 @@ namespace WriteFaimsXMLFromRawFile
     {
         // Ms1 specific vars
         public List<Ms2Scan> ms2s;
+        // Ignore Spelling: cv
 
         private Ms1Scan(int num, int msLevel, int peaksCount, string polarity, string scanType, string filterLine, string retentionTime, double lowMz, double highMz,
             double basePeakMz, double basePeakIntensity, double totIonCurrent, Peaks peaks) : base(num, msLevel, peaksCount, polarity, scanType, filterLine,

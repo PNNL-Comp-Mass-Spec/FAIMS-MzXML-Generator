@@ -15,6 +15,7 @@ namespace WriteFaimsXMLFromRawFile
     // ReSharper disable once IdentifierTypo
     public class FAIMStoMzXMLProcessor : EventNotifier
     {
+        // Ignore Spelling: cv, xmlns, xsi, fileName
         /// <summary>
         /// This Regex matches scan filters of the form
         /// FTMS + p NSI cv=-45.00 Full ms

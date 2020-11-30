@@ -2,6 +2,8 @@
 {
     partial class Form1
     {
+        // Ignore Spelling: cmd, lbl, lst, txt
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
