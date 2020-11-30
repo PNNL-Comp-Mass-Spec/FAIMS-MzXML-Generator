@@ -8,7 +8,7 @@ using ThermoRawFileReader;
 
 namespace WriteFaimsXMLFromRawFile
 {
-    class MsScan
+    internal class MsScan
     {
         public int ScanNumber;
         public int msLevel;

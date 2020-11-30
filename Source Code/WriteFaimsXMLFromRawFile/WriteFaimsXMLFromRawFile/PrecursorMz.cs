@@ -1,7 +1,7 @@
 ﻿
 namespace WriteFaimsXMLFromRawFile
 {
-    class PrecursorMz
+    internal class PrecursorMz
     {
         public double precursorIntensity;
         public string activationMethod;

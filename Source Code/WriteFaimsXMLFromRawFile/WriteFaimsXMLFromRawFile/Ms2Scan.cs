@@ -7,11 +7,11 @@ using ThermoRawFileReader;
 
 namespace WriteFaimsXMLFromRawFile
 {
-    class Ms2Scan : MsScan
+    /// <summary>
+    /// MS2 specific info
+    /// </summary>
+    internal sealed class Ms2Scan : MsScan
     {
-        // Ms2 specific vars
-        public int collisionEnergy;
-        public PrecursorMz precursorMz;
         // Ignore Spelling: cv
 
 

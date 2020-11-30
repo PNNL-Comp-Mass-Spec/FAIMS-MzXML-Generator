@@ -6,12 +6,12 @@ using PRISM.Logging;
 
 namespace WriteFaimsXMLFromRawFile
 {
-    class Program
+    internal static class Program
     {
         private const string PROGRAM_DATE = "2020-03-26";
         // Ignore Spelling: Faims
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             try
             {

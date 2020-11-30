@@ -2,7 +2,7 @@
 
 namespace WriteFaimsXMLFromRawFile
 {
-    class Peaks
+    internal class Peaks
     {
         public int precision;
         public string byteOrder;
