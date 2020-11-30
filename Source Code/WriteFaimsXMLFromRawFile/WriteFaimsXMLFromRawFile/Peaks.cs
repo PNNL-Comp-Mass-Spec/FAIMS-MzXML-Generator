@@ -26,11 +26,7 @@ namespace WriteFaimsXMLFromRawFile
             var stringBuilder = new StringBuilder();
 
             // define spacer offset
-            var offset = "";
-            for (var i = 0; i < spaceOffset; i++)
-            {
-                offset += " ";
-            }
+            var offset = new string(' ', spaceOffset);
 
             stringBuilder.AppendFormat(offset + "<peaks precision=\"{0}\"", Precision).AppendLine();
             stringBuilder.AppendFormat(offset + " byteOrder=\"{0}\"", ByteOrder).AppendLine();
