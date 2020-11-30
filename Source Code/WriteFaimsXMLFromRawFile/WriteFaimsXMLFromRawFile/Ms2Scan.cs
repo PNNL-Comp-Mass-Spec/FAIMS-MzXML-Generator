@@ -45,7 +45,7 @@ namespace WriteFaimsXMLFromRawFile
         public void AddMs2ScanParameters(XRawFileIO reader)
         {
             // grab precursorMz from raw file
-            var success = reader.GetScanInfo(this.ScanNumber, out clsScanInfo scanInfo);
+            var success = reader.GetScanInfo(ScanNumber, out var scanInfo);
             if (!success)
             {
                 ConsoleMsgUtils.ShowWarning("Scan {0} not found by AddMs2ScanParameters", this.ScanNumber);
@@ -130,14 +130,14 @@ namespace WriteFaimsXMLFromRawFile
             var parentScanNumber = scanInfo.ScanNumber - 1;
             while (parentScanNumber > 0)
             {
-                var success = reader.GetScanInfo(parentScanNumber, out clsScanInfo parentScanInfo);
+                var success = reader.GetScanInfo(parentScanNumber, out var parentScanInfo);
                 if (success && parentScanInfo.MSLevel <= 1)
                     return parentScanInfo;
 
                 parentScanNumber--;
             }
 
-            reader.GetScanInfo(1, out clsScanInfo scanInfoFirstScan);
+            reader.GetScanInfo(1, out var scanInfoFirstScan);
             return scanInfoFirstScan;
         }
 

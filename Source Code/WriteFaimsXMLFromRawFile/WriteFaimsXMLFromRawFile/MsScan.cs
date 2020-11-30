@@ -46,7 +46,7 @@ namespace WriteFaimsXMLFromRawFile
         {
             ScanNumber = scanNumber;
 
-            if (!reader.GetScanInfo(scanNumber, out clsScanInfo scanInfo))
+            if (!reader.GetScanInfo(scanNumber, out var scanInfo))
             {
                 ConsoleMsgUtils.ShowWarning("Scan {0} not found in {1}", scanNumber, Path.GetFileName(reader.RawFilePath));
                 return;

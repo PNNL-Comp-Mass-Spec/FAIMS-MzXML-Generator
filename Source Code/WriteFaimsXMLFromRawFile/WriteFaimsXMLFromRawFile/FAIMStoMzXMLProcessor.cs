@@ -378,7 +378,7 @@ namespace WriteFaimsXMLFromRawFile
             cvValue = 0;
             filterTextMatch = string.Empty;
 
-            if (!reader.GetScanInfo(scanNumber, out clsScanInfo scanInfo))
+            if (!reader.GetScanInfo(scanNumber, out var scanInfo))
             {
                 if (showWarnings)
                 {
@@ -555,14 +555,14 @@ namespace WriteFaimsXMLFromRawFile
                 return string.Empty;
             }
 
-            var startScanFound = reader.GetScanInfo(targetScans.First(), out clsScanInfo scanFirst);
+            var startScanFound = reader.GetScanInfo(targetScans.First(), out var scanFirst);
             if (!startScanFound)
             {
                 OnWarningEvent(string.Format("Unable to find scan {0} in WriteMsRunTag", targetScans.First()));
                 return string.Empty;
             }
 
-            var endScanFound = reader.GetScanInfo(targetScans.Last(), out clsScanInfo scanLast);
+            var endScanFound = reader.GetScanInfo(targetScans.Last(), out var scanLast);
             if (!endScanFound)
             {
                 OnWarningEvent(string.Format("Unable to find scan {0} in WriteMsRunTag", targetScans.Last()));
@@ -587,7 +587,7 @@ namespace WriteFaimsXMLFromRawFile
         {
             var startScan = reader.ScanStart;
 
-            var success = reader.GetScanInfo(startScan, out clsScanInfo scanInfo);
+            var success = reader.GetScanInfo(startScan, out var scanInfo);
             if (!success)
             {
                 OnWarningEvent(string.Format("Scan {0} not found in GetIonizationSource", startScan));
@@ -617,7 +617,7 @@ namespace WriteFaimsXMLFromRawFile
         {
             var startScan = reader.ScanStart;
 
-            var success = reader.GetScanInfo(startScan, out clsScanInfo scanInfo);
+            var success = reader.GetScanInfo(startScan, out var scanInfo);
             if (!success)
             {
                 OnWarningEvent(string.Format("Scan {0} not found in GetIonizationSource", startScan));
