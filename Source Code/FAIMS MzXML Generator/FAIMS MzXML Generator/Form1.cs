@@ -23,7 +23,7 @@ namespace FAIMS_MzXML_Generator
         {
         }
 
-        private void cmsSelectFiles_Click(object sender, EventArgs e)
+        private void cmdSelectFiles_Click(object sender, EventArgs e)
         {
             SelectFiles();
         }

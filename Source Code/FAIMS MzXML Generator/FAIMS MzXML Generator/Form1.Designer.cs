@@ -62,7 +62,7 @@
             this.cmdSelectFiles.TabIndex = 18;
             this.cmdSelectFiles.Text = "Browse";
             this.cmdSelectFiles.UseVisualStyleBackColor = true;
-            this.cmdSelectFiles.Click += new System.EventHandler(this.cmsSelectFiles_Click);
+            this.cmdSelectFiles.Click += new System.EventHandler(this.cmdSelectFiles_Click);
             // 
             // cmdSelectOutputDirectory
             // 
