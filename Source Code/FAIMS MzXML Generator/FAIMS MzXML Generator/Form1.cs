@@ -9,7 +9,6 @@ namespace FAIMS_MzXML_Generator
 {
     public partial class Form1 : Form
     {
-
         private WriteFaimsXMLFromRawFile.FAIMStoMzXMLProcessor mProcessor;
         private string mInputFilePath;
         private string mOutputDirectoryPath;
@@ -22,7 +21,6 @@ namespace FAIMS_MzXML_Generator
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
         }
 
         private void cmsSelectFiles_Click(object sender, EventArgs e)
@@ -78,7 +76,6 @@ namespace FAIMS_MzXML_Generator
             {
                 // Ignore errors here
             }
-
         }
 
         private void cmdClearAll_Click(object sender, EventArgs e)
@@ -200,7 +197,6 @@ namespace FAIMS_MzXML_Generator
             processingClass.WarningEvent += ProcessingClass_WarningEvent;
         }
 
-
         private void AutoDefineOutputDirectory()
         {
             if (lstInputFiles.Items.Count == 0)
@@ -295,7 +291,6 @@ namespace FAIMS_MzXML_Generator
 
             var stackTrace = StackTraceFormatter.GetExceptionStackTraceMultiLine(ex, true, false);
             AppendProcessingStatus(stackTrace, true);
-
         }
     }
 }

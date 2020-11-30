@@ -24,6 +24,7 @@ namespace WriteFaimsXMLFromRawFile
         public string ToXML(int spaceOffset)
         {
             var stringBuilder = new StringBuilder();
+
             // define spacer offset
             var offset = "";
             for (var i = 0; i < spaceOffset; i++)

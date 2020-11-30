@@ -8,8 +8,9 @@ namespace WriteFaimsXMLFromRawFile
 {
     internal static class Program
     {
-        private const string PROGRAM_DATE = "2020-03-26";
         // Ignore Spelling: Faims
+
+        private const string PROGRAM_DATE = "2020-11-30";
 
         private static void Main(string[] args)
         {
@@ -67,7 +68,6 @@ namespace WriteFaimsXMLFromRawFile
                 }
 
                 System.Threading.Thread.Sleep(750);
-
             }
             catch (Exception ex)
             {

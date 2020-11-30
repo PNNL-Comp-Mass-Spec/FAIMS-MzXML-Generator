@@ -112,7 +112,7 @@ namespace WriteFaimsXMLFromRawFile
                 if (param.Contains("@"))
                 {
                     // HCD25.00 -> [HCD, 25.00]
-                    // regex alpha from numeric
+                    // RegEx alpha from numeric
                     var activationArray = Regex.Matches(param.Split('@')[1].Trim(), @"\D+|\d+").Cast<Match>().Select(m => m.Value).ToArray();
 
                     this.collisionEnergy = Convert.ToInt32(double.Parse(activationArray[1]));

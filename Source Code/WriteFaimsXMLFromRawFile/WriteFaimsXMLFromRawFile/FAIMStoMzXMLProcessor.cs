@@ -16,8 +16,9 @@ namespace WriteFaimsXMLFromRawFile
     public class FAIMStoMzXMLProcessor : EventNotifier
     {
         // Ignore Spelling: cv, xmlns, xsi, fileName
+
         /// <summary>
-        /// This Regex matches scan filters of the form
+        /// This RegEx matches scan filters of the form
         /// FTMS + p NSI cv=-45.00 Full ms
         /// ITMS + c NSI cv=-65.00 r d Full ms2 438.7423@cid35.00
         /// </summary>
@@ -86,7 +87,6 @@ namespace WriteFaimsXMLFromRawFile
 
         public bool ProcessSingleFile(string inputFilePath, string outputDirectoryPath)
         {
-
             var inputFile = new FileInfo(inputFilePath);
 
             DirectoryInfo outputDirectory;
@@ -226,7 +226,6 @@ namespace WriteFaimsXMLFromRawFile
 
                     using (var writer = new StreamWriter(new FileStream(mzXmlPath, FileMode.Create, FileAccess.Write, FileShare.Read)))
                     {
-
                         WriteHeader(writer, filePath, reader, fileSha1, targetScans);
 
                         Ms1Scan currentMS1Scan = null;
@@ -437,7 +436,6 @@ namespace WriteFaimsXMLFromRawFile
 
         private SortedSet<float> GetUniqueCvValues(XRawFileIO reader)
         {
-
             OnDebugEvent("Determining FAIMS CV values");
 
             var lastStatus = DateTime.UtcNow;

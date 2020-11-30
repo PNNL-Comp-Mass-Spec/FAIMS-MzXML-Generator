@@ -199,6 +199,5 @@ namespace WriteFaimsXMLFromRawFile
 
             return "" + prefix + "e+0" + exponent;
         }
-
     }
 }
