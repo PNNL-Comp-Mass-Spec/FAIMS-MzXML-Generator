@@ -531,14 +531,14 @@ namespace WriteFaimsXMLFromRawFile
             sb.AppendLine("  <msInstrument>");
             sb.AppendLine("   <msManufacturer category=\"msManufacturer\" value=\"Thermo Finnigan\" />");
             sb.AppendLine("   <msModel category=\"msModel\" value=\"unknown\" />");
-            sb.AppendLine("   <msIonisation category=\"msIonisation\" value=\"" + GetIonizationSource(reader) + "\" />");
-            sb.AppendLine("   <msMassAnalyzer category=\"msMassAnalyzer\" value=\"" + GetMzAnalyzer(reader) + "\" />");
+            sb.AppendFormat("   <msIonisation category=\"msIonisation\" value=\"{0}\" />", GetIonizationSource(reader)).AppendLine();
+            sb.AppendFormat("   <msMassAnalyzer category=\"msMassAnalyzer\" value=\"{0}\" />", GetMzAnalyzer(reader)).AppendLine();
             sb.AppendLine("   <msDetector category=\"msDetector\" value=\"unknown\" />");
             sb.AppendLine("   <software type=\"acquisition\" name=\"Xcalibur\" version=\"3.1.2279\" />");
             sb.AppendLine("  </msInstrument>");
             sb.AppendLine("  <dataProcessing centroided=\"1\">");
-            sb.AppendLine(string.Format(
-                "   <software type=\"conversion\" name=\"WriteFaimsXMLFromRawFile\" version=\"{0}\" />", version));
+            sb.AppendFormat(
+                "   <software type=\"conversion\" name=\"WriteFaimsXMLFromRawFile\" version=\"{0}\" />", version).AppendLine();
             sb.Append("  </dataProcessing>");
 
             var headerText = sb.ToString();

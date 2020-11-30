@@ -153,19 +153,19 @@ namespace WriteFaimsXMLFromRawFile
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("   <scan num=\"" + processor.ByteTracking.CurrentScan + "\"");
-            sb.AppendLine("    msLevel=\"" + this.msLevel + "\"");
-            sb.AppendLine("    peaksCount=\"" + this.peaksCount + "\"");
-            sb.AppendLine("    polarity=\"" + this.polarity + "\"");
-            sb.AppendLine("    scanType=\"" + this.scanType + "\"");
-            sb.AppendLine("    filterLine=\"" + this.filterLine + "\"");
-            sb.AppendLine("    retentionTime=\"" + this.retentionTime + "\"");
-            sb.AppendLine("    lowMz=\"" + Math.Round(this.lowMz, 3) + "\"");
-            sb.AppendLine("    highMz=\"" + Math.Round(this.highMz, 3) + "\"");
-            sb.AppendLine("    basePeakMz=\"" + Math.Round(this.basePeakMz, 3) + "\"");
-            sb.AppendLine("    basePeakIntensity=\"" + this.FormatSpecialNumber(this.basePeakIntensity) + "\"");
-            sb.AppendLine("    totIonCurrent=\"" + this.FormatSpecialNumber(this.totIonCurrent) + "\"");
-            sb.AppendLine("    collisionEnergy=\"" + this.collisionEnergy + "\">");
+            sb.AppendFormat("   <scan num=\"{0}\"", processor.ByteTracking.CurrentScan).AppendLine();
+            sb.AppendFormat("    msLevel=\"{0}\"", MsLevel).AppendLine();
+            sb.AppendFormat("    peaksCount=\"{0}\"", PeaksCount).AppendLine();
+            sb.AppendFormat("    polarity=\"{0}\"", Polarity).AppendLine();
+            sb.AppendFormat("    scanType=\"{0}\"", ScanType).AppendLine();
+            sb.AppendFormat("    filterLine=\"{0}\"", FilterLine).AppendLine();
+            sb.AppendFormat("    retentionTime=\"{0}\"", RetentionTime).AppendLine();
+            sb.AppendFormat("    lowMz=\"" + Math.Round(LowMz, 3) + "\"").AppendLine();
+            sb.AppendFormat("    highMz=\"" + Math.Round(HighMz, 3) + "\"").AppendLine();
+            sb.AppendFormat("    basePeakMz=\"" + Math.Round(BasePeakMz, 3) + "\"").AppendLine();
+            sb.AppendFormat("    basePeakIntensity=\"" + FormatSpecialNumber(BasePeakIntensity) + "\"").AppendLine();
+            sb.AppendFormat("    totIonCurrent=\"" + FormatSpecialNumber(TotIonCurrent) + "\"").AppendLine();
+            sb.AppendFormat("    collisionEnergy=\"" + CollisionEnergy + "\">").AppendLine();
 
             sb.AppendLine(PrecursorMz.ToXML());
             sb.AppendLine(PeakData.ToXML(4));

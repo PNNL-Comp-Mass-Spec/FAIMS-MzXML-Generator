@@ -32,11 +32,11 @@ namespace WriteFaimsXMLFromRawFile
                 offset += " ";
             }
 
-            stringBuilder.AppendLine(offset + "<peaks precision=\"" + precision + "\"");
-            stringBuilder.AppendLine(offset + " byteOrder=\"" + byteOrder + "\"");
-            stringBuilder.AppendLine(offset + " contentType=\"" + contentType + "\"");
-            stringBuilder.AppendLine(offset + " compressionType=\"" + compressionType + "\"");
-            stringBuilder.Append(offset + " compressedLen=\"" + compressedLen + "\"" + ">" + encodedData + "</peaks>");
+            stringBuilder.AppendFormat(offset + "<peaks precision=\"{0}\"", Precision).AppendLine();
+            stringBuilder.AppendFormat(offset + " byteOrder=\"{0}\"", ByteOrder).AppendLine();
+            stringBuilder.AppendFormat(offset + " contentType=\"{0}\"", ContentType).AppendLine();
+            stringBuilder.AppendFormat(offset + " compressionType=\"{0}\"", CompressionType).AppendLine();
+            stringBuilder.AppendFormat(offset + " compressedLen=\"{0}\">{1}</peaks>", CompressedLen, EncodedData);
 
             return stringBuilder.ToString();
         }
