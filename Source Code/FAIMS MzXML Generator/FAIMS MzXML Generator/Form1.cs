@@ -108,12 +108,11 @@ namespace FAIMS_MzXML_Generator
 
                 if (lstInputFiles.Items.Count < 1)
                 {
-                    var errorMessage = "Please Select one or more FAIMS-based Thermo .raw files to process.";
-                    var caption = "Error Detected in Input";
-                    var buttons = MessageBoxButtons.OK;
+                    const string errorMessage = "Please Select one or more FAIMS-based Thermo .raw files to process.";
+                    const string caption = "Error Detected in Input";
 
                     // Displays the MessageBox.
-                    MessageBox.Show(errorMessage, caption, buttons);
+                    MessageBox.Show(errorMessage, caption, MessageBoxButtons.OK);
                     return;
                 }
 

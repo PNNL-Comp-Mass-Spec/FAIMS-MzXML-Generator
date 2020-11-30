@@ -122,7 +122,7 @@ namespace WriteFaimsXMLFromRawFile
             var datasetFile = new FileInfo(cleanPath);
             string inputDirectoryPath;
 
-            if (datasetFile.Directory != null && datasetFile.Directory.Exists)
+            if (datasetFile.Directory?.Exists == true)
             {
                 inputDirectoryPath = datasetFile.DirectoryName;
             }
@@ -165,7 +165,7 @@ namespace WriteFaimsXMLFromRawFile
             {
                 ProcessFile(fileItem.FullName, outputDirectory.FullName);
 
-                matchCount += 1;
+                matchCount++;
 
                 if (matchCount % 100 == 0)
                     Console.Write(".");
@@ -624,9 +624,7 @@ namespace WriteFaimsXMLFromRawFile
                 return "Unknown";
             }
 
-            var filterLineParts = scanInfo.FilterText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (var param in filterLineParts)
+            foreach (var param in scanInfo.FilterText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 if (param.Equals("FTMS"))
                 {

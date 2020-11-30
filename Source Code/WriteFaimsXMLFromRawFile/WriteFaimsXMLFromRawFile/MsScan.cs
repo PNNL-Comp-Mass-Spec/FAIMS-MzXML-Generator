@@ -129,11 +129,9 @@ namespace WriteFaimsXMLFromRawFile
 
         private string GetScanType()
         {
-            var returnString = "Unknown";
+            const string returnString = "Unknown";
 
-            var filterLineParts = this.filterLine.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (var param in filterLineParts)
+            foreach (var param in FilterLine.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 if (param.Equals("Full"))
                 {
